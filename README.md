@@ -3,8 +3,6 @@ Parsed Dota 2 Wiki for future LLM Fine-Tuning
 
 You can watch it by yourself in HTMLs folder (they need time to load)
 
-Video: https://youtu.be/DuTEXdOqXtU
-
 Here you can check it without downloading anything:
 
 https://raw.githack.com/RETRJ/DotaLore/master/HTMLs/Heroes.html
