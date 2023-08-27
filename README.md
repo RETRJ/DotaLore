@@ -16,4 +16,6 @@ P.S. data wasn't cleared too much (Bugs like 'The Shopkeeper' and 'Shopkeeper' e
 P.S.S. I consider Dragon's Blood like a diffirent universe(or subverse... idk), so the are two DK
 ![alt text](https://github.com/RETRJ/DotaLore/blob/master/Images/LoreWorld.png?raw=true)
 ![image](https://github.com/RETRJ/DotaLore/assets/40574662/417c932b-947b-47b2-80fb-620ff40a43e0)
+![image](https://github.com/RETRJ/DotaLore/assets/40574662/f4116504-c0ea-4c6e-82d1-31f66876534e)
+
 
