@@ -5,6 +5,14 @@ You can watch it by yourself in HTMLs folder (they need time to load)
 
 Video: https://youtu.be/DuTEXdOqXtU
 
+Here you can check it without downloading anything:
+
+https://raw.githack.com/RETRJ/DotaLore/master/HTMLs/Heroes.html
+https://raw.githack.com/RETRJ/DotaLore/master/HTMLs/Heroes+Characters.html
+https://raw.githack.com/RETRJ/DotaLore/master/HTMLs/Heroes+Characters+Items.html
+https://raw.githack.com/RETRJ/DotaLore/master/HTMLs/Heroes+Characters+Items+Places.html
+https://raw.githack.com/RETRJ/DotaLore/master/HTMLs/ALL(Laggy and messy).html
+
 P.S. data wasn't cleared too much (Bugs like 'The Shopkeeper' and 'Shopkeeper' exists at the same time)
 
 P.S.S. I consider Dragon's Blood like a diffirent universe(or subverse... idk), so the are two DK
