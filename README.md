@@ -5,11 +5,17 @@ You can watch it by yourself in HTMLs folder (they need time to load)
 
 Here you can check it without downloading anything:
 
-https://raw.githack.com/RETRJ/DotaLore/master/HTMLs/Heroes.html
-https://raw.githack.com/RETRJ/DotaLore/master/HTMLs/Heroes+Characters.html
-https://raw.githack.com/RETRJ/DotaLore/master/HTMLs/Heroes+Characters+Items.html
-https://raw.githack.com/RETRJ/DotaLore/master/HTMLs/Heroes+Characters+Items+Places.html
-https://raw.githack.com/RETRJ/DotaLore/master/HTMLs/ALL(Laggy and messy).html
+
+[Heroes only](https://raw.githack.com/RETRJ/DotaLore/master/HTMLs/Heroes.html)
+
+[Heroes and Characters only](https://raw.githack.com/RETRJ/DotaLore/master/HTMLs/Heroes+Characters.html)
+
+[Heroes, Characters and Items only](https://raw.githack.com/RETRJ/DotaLore/master/HTMLs/Heroes+Characters+Items.html)
+
+[Heroes, Characters, Items and Places only](https://raw.githack.com/RETRJ/DotaLore/master/HTMLs/Heroes+Characters+Items+Places.html)
+
+[EVERYTHING (even skills)(Will be loading ~5min or more)](https://raw.githack.com/RETRJ/DotaLore/master/HTMLs/ALL(Laggy_and_messy).html)
+
 
 P.S. data wasn't cleared too much (Bugs like 'The Shopkeeper' and 'Shopkeeper' exists at the same time)
 
