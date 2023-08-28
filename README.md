@@ -14,7 +14,7 @@ Here you can check it without downloading anything:
 
 [Heroes, Characters, Items and Places only](https://raw.githack.com/RETRJ/DotaLore/master/HTMLs/Heroes+Characters+Items+Places.html)
 
-[EVERYTHING (even skills)(Will be loading ~5min or more)](https://raw.githack.com/RETRJ/DotaLore/master/HTMLs/ALL(Laggy_and_messy).html)
+[EVERYTHING (even skills)(Will be loading ~5min or more)](https://raw.githack.com/RETRJ/DotaLore/master/HTMLs/ALL.html)
 
 
 P.S. data wasn't cleared too much (Bugs like 'The Shopkeeper' and 'Shopkeeper' exists at the same time)
