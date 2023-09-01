@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1600px;
+                 height: 1600px;
+                 background-color: #171717;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 0, "id": "Thunderhides", "label": "Thunderhides", "shape": "dot", "size": 72}, {"font": {"color": "white"}, "group": 1, "id": "Marrowfell Hunters", "label": "Marrowfell Hunters", "shape": "dot", "size": 34}, {"font": {"color": "white"}, "group": 0, "id": "Rumblehides", "label": "Rumblehides", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Beastmaster", "label": "Beastmaster", "shape": "dot", "size": 22}, {"font": {"color": "white"}, "group": 3, "id": "Centaur Warrunner", "label": "Centaur Warrunner", "shape": "dot", "size": 23}, {"font": {"color": "white"}, "group": 3, "id": "Centaurs", "label": "Centaurs", "shape": "dot", "size": 22}, {"font": {"color": "white"}, "group": 4, "id": "Roseleaf", "label": "Roseleaf", "shape": "dot", "size": 39}, {"font": {"color": "white"}, "group": 0, "id": "White Spire", "label": "White Spire", "shape": "dot", "size": 26}, {"font": {"color": "white"}, "group": 5, "id": "Kalabor Desert", "label": "Kalabor Desert", "shape": "dot", "size": 17}, {"font": {"color": "white"}, "group": 0, "id": "Grek", "label": "Grek", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 0, "id": "Hobgen", "label": "Hobgen", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 0, "id": "Hellbears", "label": "Hellbears", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 1, "id": "Prowlers", "label": "Prowlers", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 1, "id": "Mavor", "label": "Mavor", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 1, "id": "Lina", "label": "Lina", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Lycan", "label": "Lycan", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Vhoul", "label": "Vhoul", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Ogres", "label": "Ogres", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Bronze Legion", "label": "Bronze Legion", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Red Mist", "label": "Red Mist", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Rix", "label": "Rix", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Wildwings", "label": "Wildwings", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Vhoul Rebellion", "label": "Vhoul Rebellion", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Pangolier", "label": "Pangolier", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Slom", "label": "Slom", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Stone Hills", "label": "Stone Hills", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Beastmaster\u0027s Father", "label": "Beastmaster\u0027s Father", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "The Last King of Slom", "label": "The Last King of Slom", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Fell-deer", "label": "Fell-deer", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Pantherans", "label": "Pantherans", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Lone Druid", "label": "Lone Druid", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Monkey King", "label": "Monkey King", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Druud", "label": "Druud", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 3, "id": "Omexe", "label": "Omexe", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 3, "id": "Selemene", "label": "Selemene", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Elder Greyhoofs", "label": "Elder Greyhoofs", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 3, "id": "Warstomp Clan", "label": "Warstomp Clan", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 3, "id": "Great Belt of Omexe", "label": "Great Belt of Omexe", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 3, "id": "Disruptor", "label": "Disruptor", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Hoodwink", "label": "Hoodwink", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Lightglass", "label": "Lightglass", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Redmaw", "label": "Redmaw", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Dark Willow", "label": "Dark Willow", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 4, "id": "Treant Protector", "label": "Treant Protector", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Bloodseeker", "label": "Bloodseeker", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Timbersaw", "label": "Timbersaw", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Legion Commander", "label": "Legion Commander", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Treant Protectors", "label": "Treant Protectors", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Bullsnake Flag", "label": "Bullsnake Flag", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Aubgraw", "label": "Aubgraw", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Marcus", "label": "Marcus", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Mial", "label": "Mial", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Springwind", "label": "Springwind", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Vanessa", "label": "Vanessa", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Magnus", "label": "Magnus", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Revtel", "label": "Revtel", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Stonehall", "label": "Stonehall", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Meepo", "label": "Meepo", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Bounty Hunter", "label": "Bounty Hunter", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Anessix", "label": "Anessix", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Breklin", "label": "Breklin", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Springfoot", "label": "Springfoot", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Verdant Guild", "label": "Verdant Guild", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Golems", "label": "Golems", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 5, "id": "Howling Weald", "label": "Howling Weald", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "Conclave of the Brine", "label": "Conclave of the Brine", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "Siltbreaker", "label": "Siltbreaker", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "Temple of Ermacor", "label": "Temple of Ermacor", "shape": "dot", "size": 11}]);
+                  edges = new vis.DataSet([{"from": "Thunderhides", "to": "Marrowfell Hunters", "width": 1}, {"from": "Thunderhides", "to": "Rumblehides", "width": 1}, {"from": "Thunderhides", "to": "Beastmaster", "width": 1}, {"from": "Thunderhides", "to": "Centaur Warrunner", "width": 1}, {"from": "Thunderhides", "to": "Centaurs", "width": 1}, {"from": "Thunderhides", "to": "Roseleaf", "width": 1}, {"from": "Thunderhides", "to": "White Spire", "width": 1}, {"from": "Thunderhides", "to": "Kalabor Desert", "width": 1}, {"from": "Thunderhides", "to": "Grek", "width": 1}, {"from": "Thunderhides", "to": "Hobgen", "width": 1}, {"from": "Marrowfell Hunters", "to": "Centaurs", "width": 1}, {"from": "Marrowfell Hunters", "to": "Hellbears", "width": 1}, {"from": "Marrowfell Hunters", "to": "Prowlers", "width": 1}, {"from": "Marrowfell Hunters", "to": "Mavor", "width": 1}, {"from": "Marrowfell Hunters", "to": "Centaur Warrunner", "width": 1}, {"from": "Marrowfell Hunters", "to": "Beastmaster", "width": 1}, {"from": "Marrowfell Hunters", "to": "Lina", "width": 1}, {"from": "Marrowfell Hunters", "to": "Lycan", "width": 1}, {"from": "Marrowfell Hunters", "to": "Vhoul", "width": 1}, {"from": "Marrowfell Hunters", "to": "Ogres", "width": 1}, {"from": "Marrowfell Hunters", "to": "Bronze Legion", "width": 1}, {"from": "Marrowfell Hunters", "to": "Red Mist", "width": 1}, {"from": "Marrowfell Hunters", "to": "Roseleaf", "width": 1}, {"from": "Marrowfell Hunters", "to": "Kalabor Desert", "width": 1}, {"from": "Marrowfell Hunters", "to": "Rix", "width": 1}, {"from": "Marrowfell Hunters", "to": "Wildwings", "width": 1}, {"from": "Marrowfell Hunters", "to": "Vhoul Rebellion", "width": 1}, {"from": "Marrowfell Hunters", "to": "Pangolier", "width": 1}, {"from": "Beastmaster", "to": "Slom", "width": 1}, {"from": "Beastmaster", "to": "Stone Hills", "width": 1}, {"from": "Beastmaster", "to": "Beastmaster\u0027s Father", "width": 1}, {"from": "Beastmaster", "to": "The Last King of Slom", "width": 1}, {"from": "Beastmaster", "to": "Fell-deer", "width": 1}, {"from": "Beastmaster", "to": "Pantherans", "width": 1}, {"from": "Beastmaster", "to": "Lone Druid", "width": 1}, {"from": "Beastmaster", "to": "Monkey King", "width": 1}, {"from": "Centaur Warrunner", "to": "Druud", "width": 1}, {"from": "Centaur Warrunner", "to": "Omexe", "width": 1}, {"from": "Centaur Warrunner", "to": "Selemene", "width": 1}, {"from": "Centaur Warrunner", "to": "Centaurs", "width": 1}, {"from": "Centaur Warrunner", "to": "Elder Greyhoofs", "width": 1}, {"from": "Centaur Warrunner", "to": "Warstomp Clan", "width": 1}, {"from": "Centaur Warrunner", "to": "Great Belt of Omexe", "width": 1}, {"from": "Centaur Warrunner", "to": "Disruptor", "width": 1}, {"from": "Centaur Warrunner", "to": "Hoodwink", "width": 1}, {"from": "Centaurs", "to": "Druud", "width": 1}, {"from": "Centaurs", "to": "Omexe", "width": 1}, {"from": "Centaurs", "to": "Warstomp Clan", "width": 1}, {"from": "Centaurs", "to": "Elder Greyhoofs", "width": 1}, {"from": "Centaurs", "to": "Great Belt of Omexe", "width": 1}, {"from": "Centaurs", "to": "Prowlers", "width": 1}, {"from": "Centaurs", "to": "Mavor", "width": 1}, {"from": "Roseleaf", "to": "Lightglass", "width": 1}, {"from": "Roseleaf", "to": "Redmaw", "width": 1}, {"from": "Roseleaf", "to": "Dark Willow", "width": 1}, {"from": "Roseleaf", "to": "Treant Protector", "width": 1}, {"from": "Roseleaf", "to": "Bloodseeker", "width": 1}, {"from": "Roseleaf", "to": "Timbersaw", "width": 1}, {"from": "Roseleaf", "to": "Legion Commander", "width": 1}, {"from": "Roseleaf", "to": "Treant Protectors", "width": 1}, {"from": "Roseleaf", "to": "Bronze Legion", "width": 1}, {"from": "Roseleaf", "to": "Red Mist", "width": 1}, {"from": "Roseleaf", "to": "Bullsnake Flag", "width": 1}, {"from": "Roseleaf", "to": "Hellbears", "width": 1}, {"from": "Roseleaf", "to": "Prowlers", "width": 1}, {"from": "Roseleaf", "to": "Aubgraw", "width": 1}, {"from": "Roseleaf", "to": "Marcus", "width": 1}, {"from": "Roseleaf", "to": "Mavor", "width": 1}, {"from": "Roseleaf", "to": "Mial", "width": 1}, {"from": "Roseleaf", "to": "Springwind", "width": 1}, {"from": "Roseleaf", "to": "Vanessa", "width": 1}, {"from": "Roseleaf", "to": "Magnus", "width": 1}, {"from": "White Spire", "to": "Revtel", "width": 1}, {"from": "White Spire", "to": "Stonehall", "width": 1}, {"from": "White Spire", "to": "Dark Willow", "width": 1}, {"from": "White Spire", "to": "Meepo", "width": 1}, {"from": "White Spire", "to": "Pangolier", "width": 1}, {"from": "White Spire", "to": "Bounty Hunter", "width": 1}, {"from": "White Spire", "to": "Hellbears", "width": 1}, {"from": "White Spire", "to": "Anessix", "width": 1}, {"from": "White Spire", "to": "Breklin", "width": 1}, {"from": "White Spire", "to": "Springfoot", "width": 1}, {"from": "White Spire", "to": "Verdant Guild", "width": 1}, {"from": "White Spire", "to": "Golems", "width": 1}, {"from": "Kalabor Desert", "to": "Howling Weald", "width": 1}, {"from": "Kalabor Desert", "to": "Conclave of the Brine", "width": 1}, {"from": "Kalabor Desert", "to": "Siltbreaker", "width": 1}, {"from": "Kalabor Desert", "to": "Temple of Ermacor", "width": 1}, {"from": "Grek", "to": "Hellbears", "width": 1}, {"from": "Grek", "to": "Breklin", "width": 1}, {"from": "Hobgen", "to": "Verdant Guild", "width": 1}, {"from": "Hobgen", "to": "Golems", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"gravitationalConstant": -8000, "centralGravity": 4, "springLength": 500, "springConstant": 0.002, "damping": 0.15, "avoidOverlap": 0.2}, "maxVelocity": 70, "minVelocity": 0.75}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

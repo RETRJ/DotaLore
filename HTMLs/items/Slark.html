@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1600px;
+                 height: 1600px;
+                 background-color: #171717;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 2, "id": "Slark", "label": "Slark", "shape": "dot", "size": 90}, {"font": {"color": "white"}, "group": 0, "id": "Crey", "label": "Crey", "shape": "dot", "size": 22}, {"font": {"color": "white"}, "group": 2, "id": "Dark Reef", "label": "Dark Reef", "shape": "dot", "size": 26}, {"font": {"color": "white"}, "group": 3, "id": "Shadeshore", "label": "Shadeshore", "shape": "dot", "size": 17}, {"font": {"color": "white"}, "group": 3, "id": "Tidemarsh", "label": "Tidemarsh", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Dark Ones", "label": "Dark Ones", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 3, "id": "Meranths", "label": "Meranths", "shape": "dot", "size": 30}, {"font": {"color": "white"}, "group": 0, "id": "Slithereen", "label": "Slithereen", "shape": "dot", "size": 33}, {"font": {"color": "white"}, "group": 2, "id": "Lorlin Lasan", "label": "Lorlin Lasan", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Dark Reef Dozen", "label": "Dark Reef Dozen", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Daggerfish", "label": "Daggerfish", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Glow Conch", "label": "Glow Conch", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Umizar", "label": "Umizar", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Drow Ranger", "label": "Drow Ranger", "shape": "dot", "size": 27}, {"font": {"color": "white"}, "group": 4, "id": "Pudge", "label": "Pudge", "shape": "dot", "size": 36}, {"font": {"color": "white"}, "group": 2, "id": "Skeleton King", "label": "Skeleton King", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Dark Pact", "label": "Dark Pact", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Pounce", "label": "Pounce", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Essence Shift", "label": "Essence Shift", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Depth Shroud", "label": "Depth Shroud", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Shadow Dance", "label": "Shadow Dance", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Naga Siren", "label": "Naga Siren", "shape": "dot", "size": 29}, {"font": {"color": "white"}, "group": 0, "id": "Deep Ones", "label": "Deep Ones", "shape": "dot", "size": 23}, {"font": {"color": "white"}, "group": 2, "id": "Skadi", "label": "Skadi", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 0, "id": "Levianths", "label": "Levianths", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 0, "id": "Naga", "label": "Naga", "shape": "dot", "size": 17}, {"font": {"color": "white"}, "group": 0, "id": "Maelrawn", "label": "Maelrawn", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 0, "id": "Levianth", "label": "Levianth", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 0, "id": "Slithereen Guard", "label": "Slithereen Guard", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 2, "id": "Meranth", "label": "Meranth", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Conclave of the Brine", "label": "Conclave of the Brine", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 2, "id": "Siltbreaker", "label": "Siltbreaker", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Guttleslugs", "label": "Guttleslugs", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Shadeshore Ruins", "label": "Shadeshore Ruins", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 3, "id": "Sven", "label": "Sven", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 3, "id": "Tidehunter", "label": "Tidehunter", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Slardar", "label": "Slardar", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 3, "id": "Stars", "label": "Stars", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Sven\u0027s Mother", "label": "Sven\u0027s Mother", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Siltbreaker/Siltbreaker", "label": "Siltbreaker/Siltbreaker", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Deep Vault", "label": "Deep Vault", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 0, "id": "Order of Cyprin", "label": "Order of Cyprin", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Coral Breach", "label": "Coral Breach", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Sea Dragons", "label": "Sea Dragons", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Battle of Stonefish Gate", "label": "Battle of Stonefish Gate", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Drow", "label": "Drow", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Boreal Watch", "label": "Boreal Watch", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Kha-Ren", "label": "Kha-Ren", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Sylvan Guard", "label": "Sylvan Guard", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Arctic Arcoch", "label": "Arctic Arcoch", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Bloodroot Tree", "label": "Bloodroot Tree", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Shadowcats", "label": "Shadowcats", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Jewels of the Forest", "label": "Jewels of the Forest", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Pincher Iron", "label": "Pincher Iron", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Windranger", "label": "Windranger", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Human", "label": "Human", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Nature\u0027s Prophet", "label": "Nature\u0027s Prophet", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Cathedral of Rumusque", "label": "Cathedral of Rumusque", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Fields of Endless Carnage", "label": "Fields of Endless Carnage", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Krimwohl", "label": "Krimwohl", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Quoidge", "label": "Quoidge", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Flayed Twins", "label": "Flayed Twins", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "The Dead God", "label": "The Dead God", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Brandalon", "label": "Brandalon", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Carl", "label": "Carl", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Crella", "label": "Crella", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Lady Anshu", "label": "Lady Anshu", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Nivan Gallants", "label": "Nivan Gallants", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Ditch Hog", "label": "Ditch Hog", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Chains of Abscession", "label": "Chains of Abscession", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Necrophos", "label": "Necrophos", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Dead God", "label": "Dead God", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Lady Onshu", "label": "Lady Onshu", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Rubick", "label": "Rubick", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Shadow Shaman", "label": "Shadow Shaman", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Eye of Skadi", "label": "Eye of Skadi", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Azure Dragons", "label": "Azure Dragons", "shape": "dot", "size": 11}]);
+                  edges = new vis.DataSet([{"from": "Slark", "to": "Crey", "width": 1}, {"from": "Slark", "to": "Dark Reef", "width": 1}, {"from": "Slark", "to": "Shadeshore", "width": 1}, {"from": "Slark", "to": "Tidemarsh", "width": 1}, {"from": "Slark", "to": "Dark Ones", "width": 1}, {"from": "Slark", "to": "Meranths", "width": 1}, {"from": "Slark", "to": "Slithereen", "width": 1}, {"from": "Slark", "to": "Lorlin Lasan", "width": 1}, {"from": "Slark", "to": "Dark Reef Dozen", "width": 1}, {"from": "Slark", "to": "Daggerfish", "width": 1}, {"from": "Slark", "to": "Glow Conch", "width": 1}, {"from": "Slark", "to": "Umizar", "width": 1}, {"from": "Slark", "to": "Drow Ranger", "width": 1}, {"from": "Slark", "to": "Pudge", "width": 1}, {"from": "Slark", "to": "Skeleton King", "width": 1}, {"from": "Slark", "to": "Dark Pact", "width": 1}, {"from": "Slark", "to": "Pounce", "width": 1}, {"from": "Slark", "to": "Essence Shift", "width": 1}, {"from": "Slark", "to": "Depth Shroud", "width": 1}, {"from": "Slark", "to": "Shadow Dance", "width": 1}, {"from": "Slark", "to": "Naga Siren", "width": 1}, {"from": "Slark", "to": "Deep Ones", "width": 1}, {"from": "Slark", "to": "Skadi", "width": 1}, {"from": "Crey", "to": "Naga Siren", "width": 1}, {"from": "Crey", "to": "Levianths", "width": 1}, {"from": "Crey", "to": "Slithereen", "width": 1}, {"from": "Crey", "to": "Naga", "width": 1}, {"from": "Crey", "to": "Deep Ones", "width": 1}, {"from": "Crey", "to": "Maelrawn", "width": 1}, {"from": "Crey", "to": "Umizar", "width": 1}, {"from": "Crey", "to": "Levianth", "width": 1}, {"from": "Crey", "to": "Slithereen Guard", "width": 1}, {"from": "Dark Reef", "to": "Slithereen", "width": 1}, {"from": "Dark Reef", "to": "Naga", "width": 1}, {"from": "Dark Reef", "to": "Meranth", "width": 1}, {"from": "Dark Reef", "to": "Deep Ones", "width": 1}, {"from": "Dark Reef", "to": "Dark Reef Dozen", "width": 1}, {"from": "Dark Reef", "to": "Conclave of the Brine", "width": 1}, {"from": "Dark Reef", "to": "Dark Ones", "width": 1}, {"from": "Dark Reef", "to": "Skadi", "width": 1}, {"from": "Dark Reef", "to": "Siltbreaker", "width": 1}, {"from": "Dark Reef", "to": "Glow Conch", "width": 1}, {"from": "Dark Reef", "to": "Guttleslugs", "width": 1}, {"from": "Dark Reef", "to": "Meranths", "width": 1}, {"from": "Shadeshore", "to": "Shadeshore Ruins", "width": 1}, {"from": "Shadeshore", "to": "Sven", "width": 1}, {"from": "Shadeshore", "to": "Slithereen", "width": 1}, {"from": "Shadeshore", "to": "Meranths", "width": 1}, {"from": "Shadeshore", "to": "Tidemarsh", "width": 1}, {"from": "Meranths", "to": "Shadeshore Ruins", "width": 1}, {"from": "Meranths", "to": "Levianth", "width": 1}, {"from": "Meranths", "to": "Naga Siren", "width": 1}, {"from": "Meranths", "to": "Tidehunter", "width": 1}, {"from": "Meranths", "to": "Slardar", "width": 1}, {"from": "Meranths", "to": "Sven", "width": 1}, {"from": "Meranths", "to": "Naga", "width": 1}, {"from": "Meranths", "to": "Slithereen", "width": 1}, {"from": "Meranths", "to": "Levianths", "width": 1}, {"from": "Meranths", "to": "Stars", "width": 1}, {"from": "Meranths", "to": "Conclave of the Brine", "width": 1}, {"from": "Meranths", "to": "Sven\u0027s Mother", "width": 1}, {"from": "Meranths", "to": "Siltbreaker/Siltbreaker", "width": 1}, {"from": "Slithereen", "to": "Deep Vault", "width": 1}, {"from": "Slithereen", "to": "Maelrawn", "width": 1}, {"from": "Slithereen", "to": "Naga", "width": 1}, {"from": "Slithereen", "to": "Naga Siren", "width": 1}, {"from": "Slithereen", "to": "Slardar", "width": 1}, {"from": "Slithereen", "to": "Levianths", "width": 1}, {"from": "Slithereen", "to": "Deep Ones", "width": 1}, {"from": "Slithereen", "to": "Slithereen Guard", "width": 1}, {"from": "Slithereen", "to": "Conclave of the Brine", "width": 1}, {"from": "Slithereen", "to": "Order of Cyprin", "width": 1}, {"from": "Slithereen", "to": "Coral Breach", "width": 1}, {"from": "Slithereen", "to": "Sea Dragons", "width": 1}, {"from": "Slithereen", "to": "Battle of Stonefish Gate", "width": 1}, {"from": "Drow Ranger", "to": "Drow", "width": 1}, {"from": "Drow Ranger", "to": "Boreal Watch", "width": 1}, {"from": "Drow Ranger", "to": "Kha-Ren", "width": 1}, {"from": "Drow Ranger", "to": "Sylvan Guard", "width": 1}, {"from": "Drow Ranger", "to": "Arctic Arcoch", "width": 1}, {"from": "Drow Ranger", "to": "Bloodroot Tree", "width": 1}, {"from": "Drow Ranger", "to": "Shadowcats", "width": 1}, {"from": "Drow Ranger", "to": "Jewels of the Forest", "width": 1}, {"from": "Drow Ranger", "to": "Pincher Iron", "width": 1}, {"from": "Drow Ranger", "to": "Pudge", "width": 1}, {"from": "Drow Ranger", "to": "Windranger", "width": 1}, {"from": "Drow Ranger", "to": "Human", "width": 1}, {"from": "Drow Ranger", "to": "Nature\u0027s Prophet", "width": 1}, {"from": "Pudge", "to": "Cathedral of Rumusque", "width": 1}, {"from": "Pudge", "to": "Fields of Endless Carnage", "width": 1}, {"from": "Pudge", "to": "Krimwohl", "width": 1}, {"from": "Pudge", "to": "Quoidge", "width": 1}, {"from": "Pudge", "to": "Flayed Twins", "width": 1}, {"from": "Pudge", "to": "The Dead God", "width": 1}, {"from": "Pudge", "to": "Brandalon", "width": 1}, {"from": "Pudge", "to": "Carl", "width": 1}, {"from": "Pudge", "to": "Crella", "width": 1}, {"from": "Pudge", "to": "Lady Anshu", "width": 1}, {"from": "Pudge", "to": "Nivan Gallants", "width": 1}, {"from": "Pudge", "to": "Ditch Hog", "width": 1}, {"from": "Pudge", "to": "Chains of Abscession", "width": 1}, {"from": "Pudge", "to": "Necrophos", "width": 1}, {"from": "Pudge", "to": "Human", "width": 1}, {"from": "Pudge", "to": "Dead God", "width": 1}, {"from": "Pudge", "to": "Lady Onshu", "width": 1}, {"from": "Pudge", "to": "Rubick", "width": 1}, {"from": "Naga Siren", "to": "Maelrawn", "width": 1}, {"from": "Naga Siren", "to": "Naga", "width": 1}, {"from": "Naga Siren", "to": "Deep Ones", "width": 1}, {"from": "Naga Siren", "to": "Order of Cyprin", "width": 1}, {"from": "Naga Siren", "to": "Slithereen Guard", "width": 1}, {"from": "Naga Siren", "to": "Battle of Stonefish Gate", "width": 1}, {"from": "Naga Siren", "to": "Slardar", "width": 1}, {"from": "Naga Siren", "to": "Levianth", "width": 1}, {"from": "Naga Siren", "to": "Conclave of the Brine", "width": 1}, {"from": "Naga Siren", "to": "Deep Vault", "width": 1}, {"from": "Naga Siren", "to": "Shadow Shaman", "width": 1}, {"from": "Deep Ones", "to": "Coral Breach", "width": 1}, {"from": "Deep Ones", "to": "Deep Vault", "width": 1}, {"from": "Deep Ones", "to": "Naga", "width": 1}, {"from": "Deep Ones", "to": "Slardar", "width": 1}, {"from": "Deep Ones", "to": "Sea Dragons", "width": 1}, {"from": "Deep Ones", "to": "Slithereen Guard", "width": 1}, {"from": "Skadi", "to": "Eye of Skadi", "width": 1}, {"from": "Skadi", "to": "Azure Dragons", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"gravitationalConstant": -8000, "centralGravity": 4, "springLength": 500, "springConstant": 0.002, "damping": 0.15, "avoidOverlap": 0.2}, "maxVelocity": 70, "minVelocity": 0.75}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1600px;
+                 height: 1600px;
+                 background-color: #171717;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 0, "id": "Arc Warden", "label": "Arc Warden", "shape": "dot", "size": 29}, {"font": {"color": "white"}, "group": 1, "id": "Primordial Consciousness", "label": "Primordial Consciousness", "shape": "dot", "size": 69}, {"font": {"color": "white"}, "group": 4, "id": "Mad Moon", "label": "Mad Moon", "shape": "dot", "size": 29}, {"font": {"color": "white"}, "group": 0, "id": "Tomo\u0027kan", "label": "Tomo\u0027kan", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Wraiths", "label": "Wraiths", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Filomena", "label": "Filomena", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Kashurra", "label": "Kashurra", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 2, "id": "Dire", "label": "Dire", "shape": "dot", "size": 30}, {"font": {"color": "white"}, "group": 2, "id": "Radiant", "label": "Radiant", "shape": "dot", "size": 29}, {"font": {"color": "white"}, "group": 3, "id": "Runes of Power", "label": "Runes of Power", "shape": "dot", "size": 17}, {"font": {"color": "white"}, "group": 0, "id": "Nemesis Stones", "label": "Nemesis Stones", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 0, "id": "Nemestice", "label": "Nemestice", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 5, "id": "Order", "label": "Order", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Zeus", "label": "Zeus", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Radinthul", "label": "Radinthul", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 1, "id": "Diruulth", "label": "Diruulth", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 5, "id": "The Wailing One", "label": "The Wailing One", "shape": "dot", "size": 17}, {"font": {"color": "white"}, "group": 2, "id": "Prowlers", "label": "Prowlers", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Breno", "label": "Breno", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Sithil", "label": "Sithil", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Prellex", "label": "Prellex", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Aegis of Champions", "label": "Aegis of Champions", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Mana", "label": "Mana", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Radiant Ore", "label": "Radiant Ore", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Chaos", "label": "Chaos", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 4, "id": "Arc Warden (Dragon\u0027s Blood)", "label": "Arc Warden (Dragon\u0027s Blood)", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 2, "id": "Quirt", "label": "Quirt", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Direstone", "label": "Direstone", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Kanna", "label": "Kanna", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Outworld Destroyer", "label": "Outworld Destroyer", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Pugna", "label": "Pugna", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "The Earth", "label": "The Earth", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 4, "id": "Abzidian", "label": "Abzidian", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Demon Edge", "label": "Demon Edge", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Archronicus (Dragon\u0027s Blood)", "label": "Archronicus (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Marci", "label": "Marci", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "Wailing Mountains", "label": "Wailing Mountains", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "Brewmaster", "label": "Brewmaster", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "Order of the Oyo", "label": "Order of the Oyo", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "The Seven Planes", "label": "The Seven Planes", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Exort", "label": "Exort", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Quas", "label": "Quas", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Arcane Blink", "label": "Arcane Blink", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Bottle", "label": "Bottle", "shape": "dot", "size": 11}]);
+                  edges = new vis.DataSet([{"from": "Arc Warden", "to": "Primordial Consciousness", "width": 1}, {"from": "Arc Warden", "to": "Mad Moon", "width": 1}, {"from": "Arc Warden", "to": "Tomo\u0027kan", "width": 1}, {"from": "Arc Warden", "to": "Wraiths", "width": 1}, {"from": "Arc Warden", "to": "Filomena", "width": 1}, {"from": "Arc Warden", "to": "Kashurra", "width": 1}, {"from": "Arc Warden", "to": "Dire", "width": 1}, {"from": "Arc Warden", "to": "Radiant", "width": 1}, {"from": "Arc Warden", "to": "Runes of Power", "width": 1}, {"from": "Arc Warden", "to": "Nemesis Stones", "width": 1}, {"from": "Arc Warden", "to": "Nemestice", "width": 1}, {"from": "Arc Warden", "to": "Order", "width": 1}, {"from": "Arc Warden", "to": "Zeus", "width": 1}, {"from": "Arc Warden", "to": "Radinthul", "width": 1}, {"from": "Arc Warden", "to": "Diruulth", "width": 1}, {"from": "Primordial Consciousness", "to": "Radiant", "width": 1}, {"from": "Primordial Consciousness", "to": "Dire", "width": 1}, {"from": "Primordial Consciousness", "to": "Mad Moon", "width": 1}, {"from": "Primordial Consciousness", "to": "Radinthul", "width": 1}, {"from": "Primordial Consciousness", "to": "Diruulth", "width": 1}, {"from": "Primordial Consciousness", "to": "The Wailing One", "width": 1}, {"from": "Primordial Consciousness", "to": "Runes of Power", "width": 1}, {"from": "Radiant", "to": "Mad Moon", "width": 1}, {"from": "Radiant", "to": "Prowlers", "width": 1}, {"from": "Radiant", "to": "Breno", "width": 1}, {"from": "Radiant", "to": "Kashurra", "width": 1}, {"from": "Radiant", "to": "Sithil", "width": 1}, {"from": "Radiant", "to": "Dire", "width": 1}, {"from": "Radiant", "to": "Prellex", "width": 1}, {"from": "Radiant", "to": "Aegis of Champions", "width": 1}, {"from": "Radiant", "to": "Mana", "width": 1}, {"from": "Radiant", "to": "Radiant Ore", "width": 1}, {"from": "Radiant", "to": "Chaos", "width": 1}, {"from": "Radiant", "to": "Nemesis Stones", "width": 1}, {"from": "Radiant", "to": "Arc Warden (Dragon\u0027s Blood)", "width": 1}, {"from": "Dire", "to": "Mad Moon", "width": 1}, {"from": "Dire", "to": "Prowlers", "width": 1}, {"from": "Dire", "to": "Kashurra", "width": 1}, {"from": "Dire", "to": "Quirt", "width": 1}, {"from": "Dire", "to": "Aegis of Champions", "width": 1}, {"from": "Dire", "to": "Direstone", "width": 1}, {"from": "Dire", "to": "Mana", "width": 1}, {"from": "Dire", "to": "Chaos", "width": 1}, {"from": "Dire", "to": "Nemesis Stones", "width": 1}, {"from": "Dire", "to": "Arc Warden (Dragon\u0027s Blood)", "width": 1}, {"from": "Dire", "to": "Kanna", "width": 1}, {"from": "Dire", "to": "Outworld Destroyer", "width": 1}, {"from": "Dire", "to": "Pugna", "width": 1}, {"from": "Mad Moon", "to": "Nemesis Stones", "width": 1}, {"from": "Mad Moon", "to": "The Earth", "width": 1}, {"from": "Mad Moon", "to": "Abzidian", "width": 1}, {"from": "Mad Moon", "to": "Filomena", "width": 1}, {"from": "Mad Moon", "to": "Demon Edge", "width": 1}, {"from": "Mad Moon", "to": "Archronicus (Dragon\u0027s Blood)", "width": 1}, {"from": "Mad Moon", "to": "Direstone", "width": 1}, {"from": "Mad Moon", "to": "Radiant Ore", "width": 1}, {"from": "Mad Moon", "to": "Nemestice", "width": 1}, {"from": "Mad Moon", "to": "Marci", "width": 1}, {"from": "Mad Moon", "to": "Arc Warden (Dragon\u0027s Blood)", "width": 1}, {"from": "Radinthul", "to": "The Earth", "width": 1}, {"from": "Radinthul", "to": "Chaos", "width": 1}, {"from": "Diruulth", "to": "The Earth", "width": 1}, {"from": "Diruulth", "to": "Chaos", "width": 1}, {"from": "The Wailing One", "to": "Wailing Mountains", "width": 1}, {"from": "The Wailing One", "to": "Brewmaster", "width": 1}, {"from": "The Wailing One", "to": "Order of the Oyo", "width": 1}, {"from": "The Wailing One", "to": "The Seven Planes", "width": 1}, {"from": "The Wailing One", "to": "Order", "width": 1}, {"from": "Runes of Power", "to": "Exort", "width": 1}, {"from": "Runes of Power", "to": "Quas", "width": 1}, {"from": "Runes of Power", "to": "Arcane Blink", "width": 1}, {"from": "Runes of Power", "to": "Bottle", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"gravitationalConstant": -8000, "centralGravity": 4, "springLength": 500, "springConstant": 0.002, "damping": 0.15, "avoidOverlap": 0.2}, "maxVelocity": 70, "minVelocity": 0.75}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

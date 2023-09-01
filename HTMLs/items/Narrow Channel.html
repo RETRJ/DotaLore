@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1600px;
+                 height: 1600px;
+                 background-color: #171717;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 0, "id": "Kunkka", "label": "Kunkka", "shape": "dot", "size": 34}, {"font": {"color": "white"}, "group": 0, "id": "Narrow Channel", "label": "Narrow Channel", "shape": "dot", "size": 61}, {"font": {"color": "white"}, "group": 0, "id": "Cladd", "label": "Cladd", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Isle of Songs", "label": "Isle of Songs", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Port Mignin", "label": "Port Mignin", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Trembling Isle", "label": "Trembling Isle", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Maelrawn", "label": "Maelrawn", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Keen", "label": "Keen", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Suicide-Mages", "label": "Suicide-Mages", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Claddish Navy", "label": "Claddish Navy", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Demons of the Cataract", "label": "Demons of the Cataract", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Kraken", "label": "Kraken", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Tree Weasels", "label": "Tree Weasels", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Tidebringer", "label": "Tidebringer", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Mighty Leviathan", "label": "Mighty Leviathan", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Marci", "label": "Marci", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "The Cataract", "label": "The Cataract", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Dark Willow", "label": "Dark Willow", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Tidehunter", "label": "Tidehunter", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Human", "label": "Human", "shape": "dot", "size": 11}]);
+                  edges = new vis.DataSet([{"from": "Kunkka", "to": "Narrow Channel", "width": 1}, {"from": "Kunkka", "to": "Cladd", "width": 1}, {"from": "Kunkka", "to": "Isle of Songs", "width": 1}, {"from": "Kunkka", "to": "Port Mignin", "width": 1}, {"from": "Kunkka", "to": "Trembling Isle", "width": 1}, {"from": "Kunkka", "to": "Maelrawn", "width": 1}, {"from": "Kunkka", "to": "Keen", "width": 1}, {"from": "Kunkka", "to": "Suicide-Mages", "width": 1}, {"from": "Kunkka", "to": "Claddish Navy", "width": 1}, {"from": "Kunkka", "to": "Demons of the Cataract", "width": 1}, {"from": "Kunkka", "to": "Kraken", "width": 1}, {"from": "Kunkka", "to": "Tree Weasels", "width": 1}, {"from": "Kunkka", "to": "Tidebringer", "width": 1}, {"from": "Kunkka", "to": "Mighty Leviathan", "width": 1}, {"from": "Kunkka", "to": "Marci", "width": 1}, {"from": "Kunkka", "to": "The Cataract", "width": 1}, {"from": "Kunkka", "to": "Dark Willow", "width": 1}, {"from": "Kunkka", "to": "Tidehunter", "width": 1}, {"from": "Kunkka", "to": "Human", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"gravitationalConstant": -8000, "centralGravity": 4, "springLength": 500, "springConstant": 0.002, "damping": 0.15, "avoidOverlap": 0.2}, "maxVelocity": 70, "minVelocity": 0.75}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1600px;
+                 height: 1600px;
+                 background-color: #171717;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 0, "id": "Mars", "label": "Mars", "shape": "dot", "size": 37}, {"font": {"color": "white"}, "group": 0, "id": "Stygian Conquests", "label": "Stygian Conquests", "shape": "dot", "size": 61}, {"font": {"color": "white"}, "group": 0, "id": "Nothl Realm", "label": "Nothl Realm", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Quoidge", "label": "Quoidge", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Flayed Twins", "label": "Flayed Twins", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Selemene", "label": "Selemene", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Vulcan", "label": "Vulcan", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Sheragndar", "label": "Sheragndar", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Ash Legion", "label": "Ash Legion", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Dezun Order", "label": "Dezun Order", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "The Continuum", "label": "The Continuum", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Wightfall Invasion", "label": "Wightfall Invasion", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Duel", "label": "Duel", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Juggernaut", "label": "Juggernaut", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Order", "label": "Order", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Dawnbreaker", "label": "Dawnbreaker", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Keeper of the Light", "label": "Keeper of the Light", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Zeus", "label": "Zeus", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Io", "label": "Io", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Broodmother", "label": "Broodmother", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Duelling", "label": "Duelling", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Underlord", "label": "Underlord", "shape": "dot", "size": 11}]);
+                  edges = new vis.DataSet([{"from": "Mars", "to": "Stygian Conquests", "width": 1}, {"from": "Mars", "to": "Nothl Realm", "width": 1}, {"from": "Mars", "to": "Quoidge", "width": 1}, {"from": "Mars", "to": "Flayed Twins", "width": 1}, {"from": "Mars", "to": "Selemene", "width": 1}, {"from": "Mars", "to": "Vulcan", "width": 1}, {"from": "Mars", "to": "Sheragndar", "width": 1}, {"from": "Mars", "to": "Ash Legion", "width": 1}, {"from": "Mars", "to": "Dezun Order", "width": 1}, {"from": "Mars", "to": "The Continuum", "width": 1}, {"from": "Mars", "to": "Wightfall Invasion", "width": 1}, {"from": "Mars", "to": "Duel", "width": 1}, {"from": "Mars", "to": "Juggernaut", "width": 1}, {"from": "Mars", "to": "Order", "width": 1}, {"from": "Mars", "to": "Dawnbreaker", "width": 1}, {"from": "Mars", "to": "Keeper of the Light", "width": 1}, {"from": "Mars", "to": "Zeus", "width": 1}, {"from": "Mars", "to": "Io", "width": 1}, {"from": "Mars", "to": "Broodmother", "width": 1}, {"from": "Mars", "to": "Duelling", "width": 1}, {"from": "Mars", "to": "Underlord", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"gravitationalConstant": -8000, "centralGravity": 4, "springLength": 500, "springConstant": 0.002, "damping": 0.15, "avoidOverlap": 0.2}, "maxVelocity": 70, "minVelocity": 0.75}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

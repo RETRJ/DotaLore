@@ -1,0 +1,222 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1600px;
+                 height: 1600px;
+                 background-color: #171717;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 1600px;
+                 height: 1600px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 4, "id": "Queen of Pain", "label": "Queen of Pain", "shape": "dot", "size": 22}, {"font": {"color": "white"}, "group": 1, "id": "Anessix", "label": "Anessix", "shape": "dot", "size": 75}, {"font": {"color": "white"}, "group": 4, "id": "Elze", "label": "Elze", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Weeping Rose", "label": "Weeping Rose", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Knogh", "label": "Knogh", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 4, "id": "Vanessa", "label": "Vanessa", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Court of Ristul", "label": "Court of Ristul", "shape": "dot", "size": 29}, {"font": {"color": "white"}, "group": 4, "id": "Invoker", "label": "Invoker", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Wraith King", "label": "Wraith King", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 4, "id": "Skeleton King", "label": "Skeleton King", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Underlord", "label": "Underlord", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 2, "id": "Terrorblade", "label": "Terrorblade", "shape": "dot", "size": 64}, {"font": {"color": "white"}, "group": 3, "id": "Demons", "label": "Demons", "shape": "dot", "size": 62}, {"font": {"color": "white"}, "group": 1, "id": "Jasper Circle", "label": "Jasper Circle", "shape": "dot", "size": 15}, {"font": {"color": "white"}, "group": 1, "id": "White Spire", "label": "White Spire", "shape": "dot", "size": 26}, {"font": {"color": "white"}, "group": 4, "id": "Abysm", "label": "Abysm", "shape": "dot", "size": 15}, {"font": {"color": "white"}, "group": 0, "id": "Seven Hells", "label": "Seven Hells", "shape": "dot", "size": 78}, {"font": {"color": "white"}, "group": 1, "id": "Slyrak", "label": "Slyrak", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Golems", "label": "Golems", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Dragon Knight", "label": "Dragon Knight", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Warlock", "label": "Warlock", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 2, "id": "Barrowhaven", "label": "Barrowhaven", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Dragon Hold", "label": "Dragon Hold", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Foulfell (Dragon\u0027s Blood)", "label": "Foulfell (Dragon\u0027s Blood)", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Foulfell", "label": "Foulfell", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 2, "id": "Invoker\u0027s Tower", "label": "Invoker\u0027s Tower", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Temple of Mene (Dragon\u0027s Blood)", "label": "Temple of Mene (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Aethrak", "label": "Aethrak", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Byssrak", "label": "Byssrak", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Fymryn", "label": "Fymryn", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Indrak", "label": "Indrak", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Lirrak", "label": "Lirrak", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Mene", "label": "Mene", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Orrak", "label": "Orrak", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Selemene (Dragon\u0027s Blood)", "label": "Selemene (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "The Shopkeeper", "label": "The Shopkeeper", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Uldorak", "label": "Uldorak", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Vahdrak", "label": "Vahdrak", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Dragons (Dragon\u0027s Blood)", "label": "Dragons (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Eldwurms (Dragon\u0027s Blood)", "label": "Eldwurms (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Elves (Dragon\u0027s Blood)", "label": "Elves (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Bram", "label": "Bram", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Father", "label": "Father", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Fr\u00fchling", "label": "Fr\u00fchling", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Kaden", "label": "Kaden", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Demon Lords", "label": "Demon Lords", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 2, "id": "Earth Dragons", "label": "Earth Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Ember Dragons", "label": "Ember Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Water Dragons", "label": "Water Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Shopkeeper\u0027s Gem", "label": "Shopkeeper\u0027s Gem", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Ozkavosh", "label": "Ozkavosh", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 2, "id": "Dragon Knight (Dragon\u0027s Blood)", "label": "Dragon Knight (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Enchantress", "label": "Enchantress", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Invoker (Dragon\u0027s Blood)", "label": "Invoker (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Skywrath Mage", "label": "Skywrath Mage", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Isle of Masks", "label": "Isle of Masks", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Lesser Hells", "label": "Lesser Hells", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 3, "id": "Outer Hells", "label": "Outer Hells", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 4, "id": "Shadow Demon", "label": "Shadow Demon", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 4, "id": "Shadow Fiend", "label": "Shadow Fiend", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 3, "id": "Doom", "label": "Doom", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 3, "id": "Legion Commander", "label": "Legion Commander", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 3, "id": "Demons of the Cataract", "label": "Demons of the Cataract", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 3, "id": "Abyssal Horde", "label": "Abyssal Horde", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 3, "id": "Vashundol", "label": "Vashundol", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 4, "id": "Aziyog", "label": "Aziyog", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Maraxiform", "label": "Maraxiform", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 3, "id": "Eztzhok", "label": "Eztzhok", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Abzidian", "label": "Abzidian", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 3, "id": "Necronomicon", "label": "Necronomicon", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Book of the Dead", "label": "Book of the Dead", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Buki\u0027vak", "label": "Buki\u0027vak", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Quirt", "label": "Quirt", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Zo", "label": "Zo", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 3, "id": "Incubus", "label": "Incubus", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Dark Rift", "label": "Dark Rift", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Demon Witch", "label": "Demon Witch", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 3, "id": "Chaos", "label": "Chaos", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Umbral Pact", "label": "Umbral Pact", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Juggernaut", "label": "Juggernaut", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Terrorblade (Dragon\u0027s Blood)", "label": "Terrorblade (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Razor", "label": "Razor", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Narrow Maze", "label": "Narrow Maze", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 4, "id": "B\u0027Kor", "label": "B\u0027Kor", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Rix", "label": "Rix", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Lorlin Lasan", "label": "Lorlin Lasan", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Dark Willow", "label": "Dark Willow", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Meepo", "label": "Meepo", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Riki", "label": "Riki", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Revtel", "label": "Revtel", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Stonehall", "label": "Stonehall", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Pangolier", "label": "Pangolier", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Bounty Hunter", "label": "Bounty Hunter", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Hellbears", "label": "Hellbears", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Breklin", "label": "Breklin", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Springfoot", "label": "Springfoot", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Verdant Guild", "label": "Verdant Guild", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Thunderhides", "label": "Thunderhides", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Bleeding Hills", "label": "Bleeding Hills", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Seven Infernal Regions", "label": "Seven Infernal Regions", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Seven dark dominions", "label": "Seven dark dominions", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Sav", "label": "Sav", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "omoz", "label": "omoz", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "General names for hell:", "label": "General names for hell:", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "The burning nether", "label": "The burning nether", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "The pit", "label": "The pit", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Abyssal plane", "label": "Abyssal plane", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Umbral plane", "label": "Umbral plane", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Inferno", "label": "Inferno", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Omoz", "label": "Omoz", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "hellish", "label": "hellish", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "infernal", "label": "infernal", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "stygian", "label": "stygian", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "umbral", "label": "umbral", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Clinkz", "label": "Clinkz", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Undying", "label": "Undying", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Visage", "label": "Visage", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Underscape", "label": "Underscape", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "The Reaper", "label": "The Reaper", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "The Hoven", "label": "The Hoven", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Hellkite", "label": "Hellkite", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Muerta", "label": "Muerta", "shape": "dot", "size": 11}]);
+                  edges = new vis.DataSet([{"from": "Queen of Pain", "to": "Anessix", "width": 1}, {"from": "Queen of Pain", "to": "Elze", "width": 1}, {"from": "Queen of Pain", "to": "Weeping Rose", "width": 1}, {"from": "Queen of Pain", "to": "Knogh", "width": 1}, {"from": "Queen of Pain", "to": "Vanessa", "width": 1}, {"from": "Queen of Pain", "to": "Court of Ristul", "width": 1}, {"from": "Queen of Pain", "to": "Invoker", "width": 1}, {"from": "Queen of Pain", "to": "Wraith King", "width": 1}, {"from": "Queen of Pain", "to": "Skeleton King", "width": 1}, {"from": "Queen of Pain", "to": "Underlord", "width": 1}, {"from": "Anessix", "to": "Terrorblade", "width": 1}, {"from": "Anessix", "to": "Demons", "width": 1}, {"from": "Anessix", "to": "Court of Ristul", "width": 1}, {"from": "Anessix", "to": "Jasper Circle", "width": 1}, {"from": "Anessix", "to": "White Spire", "width": 1}, {"from": "Anessix", "to": "Abysm", "width": 1}, {"from": "Anessix", "to": "Seven Hells", "width": 1}, {"from": "Anessix", "to": "Slyrak", "width": 1}, {"from": "Anessix", "to": "Golems", "width": 1}, {"from": "Anessix", "to": "Dragon Knight", "width": 1}, {"from": "Anessix", "to": "Warlock", "width": 1}, {"from": "Terrorblade", "to": "Barrowhaven", "width": 1}, {"from": "Terrorblade", "to": "Dragon Hold", "width": 1}, {"from": "Terrorblade", "to": "Foulfell (Dragon\u0027s Blood)", "width": 1}, {"from": "Terrorblade", "to": "Foulfell", "width": 1}, {"from": "Terrorblade", "to": "Invoker\u0027s Tower", "width": 1}, {"from": "Terrorblade", "to": "Seven Hells", "width": 1}, {"from": "Terrorblade", "to": "Temple of Mene (Dragon\u0027s Blood)", "width": 1}, {"from": "Terrorblade", "to": "Aethrak", "width": 1}, {"from": "Terrorblade", "to": "Byssrak", "width": 1}, {"from": "Terrorblade", "to": "Fymryn", "width": 1}, {"from": "Terrorblade", "to": "Indrak", "width": 1}, {"from": "Terrorblade", "to": "Lirrak", "width": 1}, {"from": "Terrorblade", "to": "Mene", "width": 1}, {"from": "Terrorblade", "to": "Orrak", "width": 1}, {"from": "Terrorblade", "to": "Selemene (Dragon\u0027s Blood)", "width": 1}, {"from": "Terrorblade", "to": "Slyrak", "width": 1}, {"from": "Terrorblade", "to": "The Shopkeeper", "width": 1}, {"from": "Terrorblade", "to": "Uldorak", "width": 1}, {"from": "Terrorblade", "to": "Vahdrak", "width": 1}, {"from": "Terrorblade", "to": "Demons", "width": 1}, {"from": "Terrorblade", "to": "Dragons (Dragon\u0027s Blood)", "width": 1}, {"from": "Terrorblade", "to": "Eldwurms (Dragon\u0027s Blood)", "width": 1}, {"from": "Terrorblade", "to": "Elves (Dragon\u0027s Blood)", "width": 1}, {"from": "Terrorblade", "to": "Bram", "width": 1}, {"from": "Terrorblade", "to": "Father", "width": 1}, {"from": "Terrorblade", "to": "Fr\u00fchling", "width": 1}, {"from": "Terrorblade", "to": "Kaden", "width": 1}, {"from": "Terrorblade", "to": "Demon Lords", "width": 1}, {"from": "Terrorblade", "to": "Earth Dragons", "width": 1}, {"from": "Terrorblade", "to": "Ember Dragons", "width": 1}, {"from": "Terrorblade", "to": "Water Dragons", "width": 1}, {"from": "Terrorblade", "to": "Shopkeeper\u0027s Gem", "width": 1}, {"from": "Terrorblade", "to": "Ozkavosh", "width": 1}, {"from": "Terrorblade", "to": "Dragon Knight (Dragon\u0027s Blood)", "width": 1}, {"from": "Terrorblade", "to": "Enchantress", "width": 1}, {"from": "Terrorblade", "to": "Invoker (Dragon\u0027s Blood)", "width": 1}, {"from": "Terrorblade", "to": "Skywrath Mage", "width": 1}, {"from": "Terrorblade", "to": "Warlock", "width": 1}, {"from": "Demons", "to": "Foulfell (Dragon\u0027s Blood)", "width": 1}, {"from": "Demons", "to": "Foulfell", "width": 1}, {"from": "Demons", "to": "Isle of Masks", "width": 1}, {"from": "Demons", "to": "Lesser Hells", "width": 1}, {"from": "Demons", "to": "Outer Hells", "width": 1}, {"from": "Demons", "to": "Seven Hells", "width": 1}, {"from": "Demons", "to": "Shadow Demon", "width": 1}, {"from": "Demons", "to": "Shadow Fiend", "width": 1}, {"from": "Demons", "to": "Doom", "width": 1}, {"from": "Demons", "to": "Legion Commander", "width": 1}, {"from": "Demons", "to": "Demons of the Cataract", "width": 1}, {"from": "Demons", "to": "Abyssal Horde", "width": 1}, {"from": "Demons", "to": "Court of Ristul", "width": 1}, {"from": "Demons", "to": "Vashundol", "width": 1}, {"from": "Demons", "to": "Abysm", "width": 1}, {"from": "Demons", "to": "Aziyog", "width": 1}, {"from": "Demons", "to": "Maraxiform", "width": 1}, {"from": "Demons", "to": "Eztzhok", "width": 1}, {"from": "Demons", "to": "Abzidian", "width": 1}, {"from": "Demons", "to": "Demon Lords", "width": 1}, {"from": "Demons", "to": "Necronomicon", "width": 1}, {"from": "Demons", "to": "Book of the Dead", "width": 1}, {"from": "Demons", "to": "Buki\u0027vak", "width": 1}, {"from": "Demons", "to": "Knogh", "width": 1}, {"from": "Demons", "to": "Quirt", "width": 1}, {"from": "Demons", "to": "Zo", "width": 1}, {"from": "Demons", "to": "Incubus", "width": 1}, {"from": "Demons", "to": "Dark Rift", "width": 1}, {"from": "Demons", "to": "Demon Witch", "width": 1}, {"from": "Demons", "to": "Chaos", "width": 1}, {"from": "Demons", "to": "Ozkavosh", "width": 1}, {"from": "Demons", "to": "Umbral Pact", "width": 1}, {"from": "Demons", "to": "Juggernaut", "width": 1}, {"from": "Demons", "to": "Terrorblade (Dragon\u0027s Blood)", "width": 1}, {"from": "Demons", "to": "Underlord", "width": 1}, {"from": "Demons", "to": "Warlock", "width": 1}, {"from": "Court of Ristul", "to": "Zo", "width": 1}, {"from": "Court of Ristul", "to": "Shadow Fiend", "width": 1}, {"from": "Court of Ristul", "to": "Underlord", "width": 1}, {"from": "Court of Ristul", "to": "Shadow Demon", "width": 1}, {"from": "Court of Ristul", "to": "Razor", "width": 1}, {"from": "Court of Ristul", "to": "Aziyog", "width": 1}, {"from": "Court of Ristul", "to": "Seven Hells", "width": 1}, {"from": "Court of Ristul", "to": "Narrow Maze", "width": 1}, {"from": "Court of Ristul", "to": "Abysm", "width": 1}, {"from": "Court of Ristul", "to": "B\u0027Kor", "width": 1}, {"from": "Court of Ristul", "to": "Rix", "width": 1}, {"from": "Court of Ristul", "to": "Knogh", "width": 1}, {"from": "Jasper Circle", "to": "Lorlin Lasan", "width": 1}, {"from": "Jasper Circle", "to": "Dark Willow", "width": 1}, {"from": "Jasper Circle", "to": "Meepo", "width": 1}, {"from": "Jasper Circle", "to": "Riki", "width": 1}, {"from": "White Spire", "to": "Revtel", "width": 1}, {"from": "White Spire", "to": "Stonehall", "width": 1}, {"from": "White Spire", "to": "Dark Willow", "width": 1}, {"from": "White Spire", "to": "Meepo", "width": 1}, {"from": "White Spire", "to": "Pangolier", "width": 1}, {"from": "White Spire", "to": "Bounty Hunter", "width": 1}, {"from": "White Spire", "to": "Hellbears", "width": 1}, {"from": "White Spire", "to": "Breklin", "width": 1}, {"from": "White Spire", "to": "Springfoot", "width": 1}, {"from": "White Spire", "to": "Verdant Guild", "width": 1}, {"from": "White Spire", "to": "Golems", "width": 1}, {"from": "White Spire", "to": "Thunderhides", "width": 1}, {"from": "Abysm", "to": "Shadow Fiend", "width": 1}, {"from": "Abysm", "to": "Seven Hells", "width": 1}, {"from": "Seven Hells", "to": "Bleeding Hills", "width": 1}, {"from": "Seven Hells", "to": "Foulfell", "width": 1}, {"from": "Seven Hells", "to": "Seven Infernal Regions", "width": 1}, {"from": "Seven Hells", "to": "Seven dark dominions", "width": 1}, {"from": "Seven Hells", "to": "Sav", "width": 1}, {"from": "Seven Hells", "to": "omoz", "width": 1}, {"from": "Seven Hells", "to": "General names for hell:", "width": 1}, {"from": "Seven Hells", "to": "The burning nether", "width": 1}, {"from": "Seven Hells", "to": "The pit", "width": 1}, {"from": "Seven Hells", "to": "Abyssal plane", "width": 1}, {"from": "Seven Hells", "to": "Umbral plane", "width": 1}, {"from": "Seven Hells", "to": "Inferno", "width": 1}, {"from": "Seven Hells", "to": "Omoz", "width": 1}, {"from": "Seven Hells", "to": "hellish", "width": 1}, {"from": "Seven Hells", "to": "infernal", "width": 1}, {"from": "Seven Hells", "to": "stygian", "width": 1}, {"from": "Seven Hells", "to": "umbral", "width": 1}, {"from": "Seven Hells", "to": "Clinkz", "width": 1}, {"from": "Seven Hells", "to": "Doom", "width": 1}, {"from": "Seven Hells", "to": "Legion Commander", "width": 1}, {"from": "Seven Hells", "to": "Shadow Demon", "width": 1}, {"from": "Seven Hells", "to": "Shadow Fiend", "width": 1}, {"from": "Seven Hells", "to": "Undying", "width": 1}, {"from": "Seven Hells", "to": "Visage", "width": 1}, {"from": "Seven Hells", "to": "Wraith King", "width": 1}, {"from": "Seven Hells", "to": "Lesser Hells", "width": 1}, {"from": "Seven Hells", "to": "Narrow Maze", "width": 1}, {"from": "Seven Hells", "to": "Outer Hells", "width": 1}, {"from": "Seven Hells", "to": "Underscape", "width": 1}, {"from": "Seven Hells", "to": "The Reaper", "width": 1}, {"from": "Seven Hells", "to": "Maraxiform", "width": 1}, {"from": "Seven Hells", "to": "The Hoven", "width": 1}, {"from": "Seven Hells", "to": "Vashundol", "width": 1}, {"from": "Seven Hells", "to": "Abzidian", "width": 1}, {"from": "Seven Hells", "to": "Knogh", "width": 1}, {"from": "Seven Hells", "to": "Abyssal Horde", "width": 1}, {"from": "Seven Hells", "to": "Demon Lords", "width": 1}, {"from": "Seven Hells", "to": "Demons of the Cataract", "width": 1}, {"from": "Seven Hells", "to": "Hellkite", "width": 1}, {"from": "Seven Hells", "to": "Demon Witch", "width": 1}, {"from": "Seven Hells", "to": "Ozkavosh", "width": 1}, {"from": "Seven Hells", "to": "Muerta", "width": 1}, {"from": "Seven Hells", "to": "Underlord", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"gravitationalConstant": -8000, "centralGravity": 4, "springLength": 500, "springConstant": 0.002, "damping": 0.15, "avoidOverlap": 0.2}, "maxVelocity": 70, "minVelocity": 0.75}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

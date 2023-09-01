@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1600px;
+                 height: 1600px;
+                 background-color: #171717;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 0, "id": "Earthshaker", "label": "Earthshaker", "shape": "dot", "size": 80}, {"font": {"color": "white"}, "group": 2, "id": "Nishai", "label": "Nishai", "shape": "dot", "size": 15}, {"font": {"color": "white"}, "group": 0, "id": "The Earth", "label": "The Earth", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "The Red Mountain", "label": "The Red Mountain", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Elementals", "label": "Elementals", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 0, "id": "Behemoths", "label": "Behemoths", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Gargoyles", "label": "Gargoyles", "shape": "dot", "size": 20}, {"font": {"color": "white"}, "group": 0, "id": "Fissure", "label": "Fissure", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Enchant Totem", "label": "Enchant Totem", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Aftershock", "label": "Aftershock", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Echo Slam", "label": "Echo Slam", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Io", "label": "Io", "shape": "dot", "size": 23}, {"font": {"color": "white"}, "group": 1, "id": "Void Spirit", "label": "Void Spirit", "shape": "dot", "size": 39}, {"font": {"color": "white"}, "group": 0, "id": "Blink Dagger", "label": "Blink Dagger", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Kanna", "label": "Kanna", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Nature\u0027s Prophet", "label": "Nature\u0027s Prophet", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Outworld Destroyer", "label": "Outworld Destroyer", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Hoodwink", "label": "Hoodwink", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Temple of Ermacor", "label": "Temple of Ermacor", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Tiny", "label": "Tiny", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Visage", "label": "Visage", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Kuur-Ishiminari", "label": "Kuur-Ishiminari", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Narrow Maze", "label": "Narrow Maze", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Necro\u0027lic", "label": "Necro\u0027lic", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Fundamental Plane", "label": "Fundamental Plane", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Fundamentals", "label": "Fundamentals", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Jex", "label": "Jex", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Chaos Knight", "label": "Chaos Knight", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Dawnbreaker", "label": "Dawnbreaker", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Elder Titan", "label": "Elder Titan", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Enigma", "label": "Enigma", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Keeper of the Light", "label": "Keeper of the Light", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Mars", "label": "Mars", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Puck", "label": "Puck", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Astral Plane", "label": "Astral Plane", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Fabric of Creation", "label": "Fabric of Creation", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Hidden Temple", "label": "Hidden Temple", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Nothl Realm", "label": "Nothl Realm", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Celestials", "label": "Celestials", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Creatures of Darkness", "label": "Creatures of Darkness", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Barathrum\u0027s Master", "label": "Barathrum\u0027s Master", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Raijin", "label": "Raijin", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Korumite", "label": "Korumite", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Monks of Turstarkuri", "label": "Monks of Turstarkuri", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Shadowgate Amulet", "label": "Shadowgate Amulet", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Brewmaster", "label": "Brewmaster", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Earth Spirit", "label": "Earth Spirit", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Ember Spirit", "label": "Ember Spirit", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Night Stalker", "label": "Night Stalker", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Nyx Assassin", "label": "Nyx Assassin", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Skeleton King", "label": "Skeleton King", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Spectre", "label": "Spectre", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Storm Spirit", "label": "Storm Spirit", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Templar Assassin", "label": "Templar Assassin", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Echo Sabre", "label": "Echo Sabre", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Marci", "label": "Marci", "shape": "dot", "size": 11}]);
+                  edges = new vis.DataSet([{"from": "Earthshaker", "to": "Nishai", "width": 1}, {"from": "Earthshaker", "to": "The Earth", "width": 1}, {"from": "Earthshaker", "to": "The Red Mountain", "width": 1}, {"from": "Earthshaker", "to": "Elementals", "width": 1}, {"from": "Earthshaker", "to": "Behemoths", "width": 1}, {"from": "Earthshaker", "to": "Gargoyles", "width": 1}, {"from": "Earthshaker", "to": "Fissure", "width": 1}, {"from": "Earthshaker", "to": "Enchant Totem", "width": 1}, {"from": "Earthshaker", "to": "Aftershock", "width": 1}, {"from": "Earthshaker", "to": "Echo Slam", "width": 1}, {"from": "Earthshaker", "to": "Io", "width": 1}, {"from": "Earthshaker", "to": "Void Spirit", "width": 1}, {"from": "Earthshaker", "to": "Blink Dagger", "width": 1}, {"from": "Earthshaker", "to": "Kanna", "width": 1}, {"from": "Earthshaker", "to": "Nature\u0027s Prophet", "width": 1}, {"from": "Earthshaker", "to": "Outworld Destroyer", "width": 1}, {"from": "Nishai", "to": "The Red Mountain", "width": 1}, {"from": "Nishai", "to": "Gargoyles", "width": 1}, {"from": "Nishai", "to": "Elementals", "width": 1}, {"from": "Nishai", "to": "Hoodwink", "width": 1}, {"from": "Elementals", "to": "Gargoyles", "width": 1}, {"from": "Gargoyles", "to": "Temple of Ermacor", "width": 1}, {"from": "Gargoyles", "to": "Tiny", "width": 1}, {"from": "Gargoyles", "to": "Visage", "width": 1}, {"from": "Gargoyles", "to": "Kuur-Ishiminari", "width": 1}, {"from": "Gargoyles", "to": "Narrow Maze", "width": 1}, {"from": "Gargoyles", "to": "Necro\u0027lic", "width": 1}, {"from": "Io", "to": "Fundamental Plane", "width": 1}, {"from": "Io", "to": "Fundamentals", "width": 1}, {"from": "Io", "to": "Jex", "width": 1}, {"from": "Io", "to": "Chaos Knight", "width": 1}, {"from": "Io", "to": "Dawnbreaker", "width": 1}, {"from": "Io", "to": "Elder Titan", "width": 1}, {"from": "Io", "to": "Enigma", "width": 1}, {"from": "Io", "to": "Keeper of the Light", "width": 1}, {"from": "Io", "to": "Mars", "width": 1}, {"from": "Io", "to": "Puck", "width": 1}, {"from": "Void Spirit", "to": "Astral Plane", "width": 1}, {"from": "Void Spirit", "to": "Fabric of Creation", "width": 1}, {"from": "Void Spirit", "to": "Hidden Temple", "width": 1}, {"from": "Void Spirit", "to": "Nothl Realm", "width": 1}, {"from": "Void Spirit", "to": "Celestials", "width": 1}, {"from": "Void Spirit", "to": "Creatures of Darkness", "width": 1}, {"from": "Void Spirit", "to": "Barathrum\u0027s Master", "width": 1}, {"from": "Void Spirit", "to": "Raijin", "width": 1}, {"from": "Void Spirit", "to": "Korumite", "width": 1}, {"from": "Void Spirit", "to": "Monks of Turstarkuri", "width": 1}, {"from": "Void Spirit", "to": "Shadowgate Amulet", "width": 1}, {"from": "Void Spirit", "to": "Brewmaster", "width": 1}, {"from": "Void Spirit", "to": "Earth Spirit", "width": 1}, {"from": "Void Spirit", "to": "Ember Spirit", "width": 1}, {"from": "Void Spirit", "to": "Night Stalker", "width": 1}, {"from": "Void Spirit", "to": "Nyx Assassin", "width": 1}, {"from": "Void Spirit", "to": "Skeleton King", "width": 1}, {"from": "Void Spirit", "to": "Spectre", "width": 1}, {"from": "Void Spirit", "to": "Storm Spirit", "width": 1}, {"from": "Void Spirit", "to": "Templar Assassin", "width": 1}, {"from": "Void Spirit", "to": "Echo Sabre", "width": 1}, {"from": "Blink Dagger", "to": "Marci", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"gravitationalConstant": -8000, "centralGravity": 4, "springLength": 500, "springConstant": 0.002, "damping": 0.15, "avoidOverlap": 0.2}, "maxVelocity": 70, "minVelocity": 0.75}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

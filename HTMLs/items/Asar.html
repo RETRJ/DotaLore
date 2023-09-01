@@ -1,0 +1,222 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1600px;
+                 height: 1600px;
+                 background-color: #171717;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 1600px;
+                 height: 1600px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 0, "id": "Asar", "label": "Asar", "shape": "dot", "size": 77}, {"font": {"color": "white"}, "group": 1, "id": "Helio Imperium", "label": "Helio Imperium", "shape": "dot", "size": 84}, {"font": {"color": "white"}, "group": 0, "id": "Zal", "label": "Zal", "shape": "dot", "size": 27}, {"font": {"color": "white"}, "group": 2, "id": "Lina", "label": "Lina", "shape": "dot", "size": 55}, {"font": {"color": "white"}, "group": 3, "id": "Marci", "label": "Marci", "shape": "dot", "size": 101}, {"font": {"color": "white"}, "group": 4, "id": "Mirana", "label": "Mirana", "shape": "dot", "size": 56}, {"font": {"color": "white"}, "group": 5, "id": "Ursa", "label": "Ursa", "shape": "dot", "size": 20}, {"font": {"color": "white"}, "group": 0, "id": "Praetorian Guard", "label": "Praetorian Guard", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 1, "id": "Shoehorn", "label": "Shoehorn", "shape": "dot", "size": 15}, {"font": {"color": "white"}, "group": 0, "id": "Sherzi", "label": "Sherzi", "shape": "dot", "size": 25}, {"font": {"color": "white"}, "group": 6, "id": "Kashurra", "label": "Kashurra", "shape": "dot", "size": 61}, {"font": {"color": "white"}, "group": 0, "id": "Shabarra", "label": "Shabarra", "shape": "dot", "size": 34}, {"font": {"color": "white"}, "group": 0, "id": "Tihomir", "label": "Tihomir", "shape": "dot", "size": 23}, {"font": {"color": "white"}, "group": 0, "id": "Lina (Dragon\u0027s Blood)", "label": "Lina (Dragon\u0027s Blood)", "shape": "dot", "size": 17}, {"font": {"color": "white"}, "group": 0, "id": "Mirana (Dragon\u0027s Blood)", "label": "Mirana (Dragon\u0027s Blood)", "shape": "dot", "size": 22}, {"font": {"color": "white"}, "group": 2, "id": "Crystal Maiden", "label": "Crystal Maiden", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Davion", "label": "Davion", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 0, "id": "Luna", "label": "Luna", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 6, "id": "Miran\u01ce", "label": "Miran\u01ce", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Oracle", "label": "Oracle", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Winter Wyvern", "label": "Winter Wyvern", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Human", "label": "Human", "shape": "dot", "size": 18}, {"font": {"color": "white"}, "group": 1, "id": "Keen", "label": "Keen", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Oglodi", "label": "Oglodi", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Ogres", "label": "Ogres", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Satyrs", "label": "Satyrs", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Trolls", "label": "Trolls", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Coriel\u0027tauvi", "label": "Coriel\u0027tauvi", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Honor Guard", "label": "Honor Guard", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "?", "label": "?", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "The Senate", "label": "The Senate", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "The Seventh Legion", "label": "The Seventh Legion", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Tihomir\u0027s Legion", "label": "Tihomir\u0027s Legion", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Lina\u0027s Estate", "label": "Lina\u0027s Estate", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 4, "id": "Selemene", "label": "Selemene", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 0, "id": "Slyrak", "label": "Slyrak", "shape": "dot", "size": 15}, {"font": {"color": "white"}, "group": 0, "id": "Worldwyrm", "label": "Worldwyrm", "shape": "dot", "size": 17}, {"font": {"color": "white"}, "group": 1, "id": "Bram", "label": "Bram", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Drysi", "label": "Drysi", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Herzog", "label": "Herzog", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Jarl", "label": "Jarl", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Mirana\u0027s Grandfather", "label": "Mirana\u0027s Grandfather", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 1, "id": "Nico Hieronimo", "label": "Nico Hieronimo", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 1, "id": "Urlo", "label": "Urlo", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Vanari", "label": "Vanari", "shape": "dot", "size": 17}, {"font": {"color": "white"}, "group": 0, "id": "Eye of the Worldwyrm", "label": "Eye of the Worldwyrm", "shape": "dot", "size": 19}, {"font": {"color": "white"}, "group": 4, "id": "Selemene (Dragon\u0027s Blood)", "label": "Selemene (Dragon\u0027s Blood)", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 1, "id": "Marci\u0027s Mother", "label": "Marci\u0027s Mother", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 6, "id": "Marci\u0027s Family", "label": "Marci\u0027s Family", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 2, "id": "Shopkeeper\u0027s Gem", "label": "Shopkeeper\u0027s Gem", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 2, "id": "Crystal Maiden (Dragon\u0027s Blood)", "label": "Crystal Maiden (Dragon\u0027s Blood)", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Dragon Knight (Dragon\u0027s Blood)", "label": "Dragon Knight (Dragon\u0027s Blood)", "shape": "dot", "size": 15}, {"font": {"color": "white"}, "group": 1, "id": "Luna (Dragon\u0027s Blood)", "label": "Luna (Dragon\u0027s Blood)", "shape": "dot", "size": 15}, {"font": {"color": "white"}, "group": 0, "id": "Oracle (Dragon\u0027s Blood)", "label": "Oracle (Dragon\u0027s Blood)", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 6, "id": "Winter Wyvern (Dragon\u0027s Blood)", "label": "Winter Wyvern (Dragon\u0027s Blood)", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "The Eye", "label": "The Eye", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Desert of Misrule", "label": "Desert of Misrule", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Solar Goddess", "label": "Solar Goddess", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "The Shopkeeper", "label": "The Shopkeeper", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Dragons (Dragon\u0027s Blood)", "label": "Dragons (Dragon\u0027s Blood)", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 6, "id": "Dragons", "label": "Dragons", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Eldwurms (Dragon\u0027s Blood)", "label": "Eldwurms (Dragon\u0027s Blood)", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 2, "id": "Father", "label": "Father", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Lina\u0027s Aunt", "label": "Lina\u0027s Aunt", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Lord of Misrule", "label": "Lord of Misrule", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Dragon Clan (Dragon\u0027s Blood)", "label": "Dragon Clan (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Marrowfell Hunters", "label": "Marrowfell Hunters", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Desert Wyrm", "label": "Desert Wyrm", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Ember Dragons", "label": "Ember Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Exort", "label": "Exort", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "Pangolier", "label": "Pangolier", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Scintillant Waste", "label": "Scintillant Waste", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Viper", "label": "Viper", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Barrowhaven", "label": "Barrowhaven", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Coedwig", "label": "Coedwig", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Dragon Knights\u0027 Redoubt", "label": "Dragon Knights\u0027 Redoubt", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Hauptstadt", "label": "Hauptstadt", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Invoker\u0027s Tower", "label": "Invoker\u0027s Tower", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Magpie\u0027s Roost", "label": "Magpie\u0027s Roost", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Nightsilver Woods (Dragon\u0027s Blood)", "label": "Nightsilver Woods (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Temple of Mene (Dragon\u0027s Blood)", "label": "Temple of Mene (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Bunny", "label": "Bunny", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Gwanwyn", "label": "Gwanwyn", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 3, "id": "Nikdo", "label": "Nikdo", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Air Dragons", "label": "Air Dragons", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 3, "id": "Maelrawn the Tentacular", "label": "Maelrawn the Tentacular", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Lord Maelrawn", "label": "Lord Maelrawn", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "The Lurker in the Whirlpool", "label": "The Lurker in the Whirlpool", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Trembling Isle", "label": "Trembling Isle", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Poseidon", "label": "Poseidon", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "11 years old", "label": "11 years old", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Levianth", "label": "Levianth", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Knights of the Fold", "label": "Knights of the Fold", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Kunkka", "label": "Kunkka", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Tidehunter", "label": "Tidehunter", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Howling Hills", "label": "Howling Hills", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Quirt", "label": "Quirt", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Sithil", "label": "Sithil", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Steepstalkers", "label": "Steepstalkers", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Blink Dagger", "label": "Blink Dagger", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Bloodthorn", "label": "Bloodthorn", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Aegis of Champions", "label": "Aegis of Champions", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Mad Moon", "label": "Mad Moon", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Artificing", "label": "Artificing", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Battle of Stonefish Gate", "label": "Battle of Stonefish Gate", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Quas", "label": "Quas", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Vesture of the Tyrant card", "label": "Vesture of the Tyrant card", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Invoker (Dragon\u0027s Blood)", "label": "Invoker (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Invoker", "label": "Invoker", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Dark Moon Order", "label": "Dark Moon Order", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Nightsilver Woods", "label": "Nightsilver Woods", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 4, "id": "Temple of Mene", "label": "Temple of Mene", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 4, "id": "Sagan", "label": "Sagan", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 4, "id": "Demon Star", "label": "Demon Star", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Shrine of Selemene", "label": "Shrine of Selemene", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Solar Throne", "label": "Solar Throne", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Fymryn", "label": "Fymryn", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Elves (Dragon\u0027s Blood)", "label": "Elves (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Stars", "label": "Stars", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Griffins", "label": "Griffins", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Litigons", "label": "Litigons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Lunar Dragons", "label": "Lunar Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Owlions", "label": "Owlions", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Sabre-Lynx", "label": "Sabre-Lynx", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Dragon\u0027s Fire Whiskey", "label": "Dragon\u0027s Fire Whiskey", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Dragon Knight", "label": "Dragon Knight", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Griffin", "label": "Griffin", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "Sangstrath", "label": "Sangstrath", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "Ursine", "label": "Ursine", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "Cholgar", "label": "Cholgar", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "Ravager", "label": "Ravager", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "Razorwyrm", "label": "Razorwyrm", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "Enchantress", "label": "Enchantress", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "Lone Druid", "label": "Lone Druid", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "The Dream", "label": "The Dream", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Byssrak", "label": "Byssrak", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Kaden", "label": "Kaden", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Arc Warden", "label": "Arc Warden", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Eldwurms", "label": "Eldwurms", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "The Thunder", "label": "The Thunder", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "The Cosmos", "label": "The Cosmos", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Dire", "label": "Dire", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Radiant", "label": "Radiant", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Slyr\u00e2k", "label": "Slyr\u00e2k", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Void Dragons", "label": "Void Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Direstone", "label": "Direstone", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Nemesis Stones", "label": "Nemesis Stones", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Radiant Ore", "label": "Radiant Ore", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Arc Warden (Dragon\u0027s Blood)", "label": "Arc Warden (Dragon\u0027s Blood)", "shape": "dot", "size": 11}]);
+                  edges = new vis.DataSet([{"from": "Asar", "to": "Helio Imperium", "width": 1}, {"from": "Asar", "to": "Zal", "width": 1}, {"from": "Asar", "to": "Lina", "width": 1}, {"from": "Asar", "to": "Marci", "width": 1}, {"from": "Asar", "to": "Mirana", "width": 1}, {"from": "Asar", "to": "Ursa", "width": 1}, {"from": "Asar", "to": "Praetorian Guard", "width": 1}, {"from": "Asar", "to": "Shoehorn", "width": 1}, {"from": "Asar", "to": "Sherzi", "width": 1}, {"from": "Asar", "to": "Kashurra", "width": 1}, {"from": "Asar", "to": "Shabarra", "width": 1}, {"from": "Asar", "to": "Tihomir", "width": 1}, {"from": "Asar", "to": "Lina (Dragon\u0027s Blood)", "width": 1}, {"from": "Asar", "to": "Mirana (Dragon\u0027s Blood)", "width": 1}, {"from": "Helio Imperium", "to": "Crystal Maiden", "width": 1}, {"from": "Helio Imperium", "to": "Davion", "width": 1}, {"from": "Helio Imperium", "to": "Lina", "width": 1}, {"from": "Helio Imperium", "to": "Luna", "width": 1}, {"from": "Helio Imperium", "to": "Marci", "width": 1}, {"from": "Helio Imperium", "to": "Miran\u01ce", "width": 1}, {"from": "Helio Imperium", "to": "Oracle", "width": 1}, {"from": "Helio Imperium", "to": "Winter Wyvern", "width": 1}, {"from": "Helio Imperium", "to": "Human", "width": 1}, {"from": "Helio Imperium", "to": "Keen", "width": 1}, {"from": "Helio Imperium", "to": "Oglodi", "width": 1}, {"from": "Helio Imperium", "to": "Ogres", "width": 1}, {"from": "Helio Imperium", "to": "Satyrs", "width": 1}, {"from": "Helio Imperium", "to": "Trolls", "width": 1}, {"from": "Helio Imperium", "to": "Coriel\u0027tauvi", "width": 1}, {"from": "Helio Imperium", "to": "Honor Guard", "width": 1}, {"from": "Helio Imperium", "to": "?", "width": 1}, {"from": "Helio Imperium", "to": "Praetorian Guard", "width": 1}, {"from": "Helio Imperium", "to": "The Senate", "width": 1}, {"from": "Helio Imperium", "to": "The Seventh Legion", "width": 1}, {"from": "Helio Imperium", "to": "Tihomir\u0027s Legion", "width": 1}, {"from": "Helio Imperium", "to": "Lina\u0027s Estate", "width": 1}, {"from": "Helio Imperium", "to": "Shoehorn", "width": 1}, {"from": "Helio Imperium", "to": "Selemene", "width": 1}, {"from": "Helio Imperium", "to": "Sherzi", "width": 1}, {"from": "Helio Imperium", "to": "Slyrak", "width": 1}, {"from": "Helio Imperium", "to": "Worldwyrm", "width": 1}, {"from": "Helio Imperium", "to": "Zal", "width": 1}, {"from": "Helio Imperium", "to": "Bram", "width": 1}, {"from": "Helio Imperium", "to": "Drysi", "width": 1}, {"from": "Helio Imperium", "to": "Herzog", "width": 1}, {"from": "Helio Imperium", "to": "Jarl", "width": 1}, {"from": "Helio Imperium", "to": "Kashurra", "width": 1}, {"from": "Helio Imperium", "to": "Mirana\u0027s Grandfather", "width": 1}, {"from": "Helio Imperium", "to": "Nico Hieronimo", "width": 1}, {"from": "Helio Imperium", "to": "Shabarra", "width": 1}, {"from": "Helio Imperium", "to": "Tihomir", "width": 1}, {"from": "Helio Imperium", "to": "Urlo", "width": 1}, {"from": "Helio Imperium", "to": "Vanari", "width": 1}, {"from": "Helio Imperium", "to": "Eye of the Worldwyrm", "width": 1}, {"from": "Helio Imperium", "to": "Selemene (Dragon\u0027s Blood)", "width": 1}, {"from": "Helio Imperium", "to": "Marci\u0027s Mother", "width": 1}, {"from": "Helio Imperium", "to": "Marci\u0027s Family", "width": 1}, {"from": "Helio Imperium", "to": "Shopkeeper\u0027s Gem", "width": 1}, {"from": "Helio Imperium", "to": "Crystal Maiden (Dragon\u0027s Blood)", "width": 1}, {"from": "Helio Imperium", "to": "Dragon Knight (Dragon\u0027s Blood)", "width": 1}, {"from": "Helio Imperium", "to": "Lina (Dragon\u0027s Blood)", "width": 1}, {"from": "Helio Imperium", "to": "Luna (Dragon\u0027s Blood)", "width": 1}, {"from": "Helio Imperium", "to": "Mirana (Dragon\u0027s Blood)", "width": 1}, {"from": "Helio Imperium", "to": "Oracle (Dragon\u0027s Blood)", "width": 1}, {"from": "Helio Imperium", "to": "Winter Wyvern (Dragon\u0027s Blood)", "width": 1}, {"from": "Zal", "to": "Sherzi", "width": 1}, {"from": "Zal", "to": "Worldwyrm", "width": 1}, {"from": "Zal", "to": "Mirana", "width": 1}, {"from": "Zal", "to": "Human", "width": 1}, {"from": "Zal", "to": "Mirana\u0027s Grandfather", "width": 1}, {"from": "Zal", "to": "Shabarra", "width": 1}, {"from": "Zal", "to": "Kashurra", "width": 1}, {"from": "Zal", "to": "The Eye", "width": 1}, {"from": "Zal", "to": "Eye of the Worldwyrm", "width": 1}, {"from": "Zal", "to": "Lina (Dragon\u0027s Blood)", "width": 1}, {"from": "Zal", "to": "Mirana (Dragon\u0027s Blood)", "width": 1}, {"from": "Zal", "to": "Oracle (Dragon\u0027s Blood)", "width": 1}, {"from": "Lina", "to": "Desert of Misrule", "width": 1}, {"from": "Lina", "to": "Lina\u0027s Estate", "width": 1}, {"from": "Lina", "to": "Slyrak", "width": 1}, {"from": "Lina", "to": "Solar Goddess", "width": 1}, {"from": "Lina", "to": "The Shopkeeper", "width": 1}, {"from": "Lina", "to": "Dragons (Dragon\u0027s Blood)", "width": 1}, {"from": "Lina", "to": "Dragons", "width": 1}, {"from": "Lina", "to": "Eldwurms (Dragon\u0027s Blood)", "width": 1}, {"from": "Lina", "to": "Father", "width": 1}, {"from": "Lina", "to": "Kashurra", "width": 1}, {"from": "Lina", "to": "Lina\u0027s Aunt", "width": 1}, {"from": "Lina", "to": "Lord of Misrule", "width": 1}, {"from": "Lina", "to": "Nico Hieronimo", "width": 1}, {"from": "Lina", "to": "Shabarra", "width": 1}, {"from": "Lina", "to": "Tihomir", "width": 1}, {"from": "Lina", "to": "Vanari", "width": 1}, {"from": "Lina", "to": "Dragon Clan (Dragon\u0027s Blood)", "width": 1}, {"from": "Lina", "to": "Marrowfell Hunters", "width": 1}, {"from": "Lina", "to": "Desert Wyrm", "width": 1}, {"from": "Lina", "to": "Ember Dragons", "width": 1}, {"from": "Lina", "to": "Eye of the Worldwyrm", "width": 1}, {"from": "Lina", "to": "Shopkeeper\u0027s Gem", "width": 1}, {"from": "Lina", "to": "Exort", "width": 1}, {"from": "Lina", "to": "Crystal Maiden (Dragon\u0027s Blood)", "width": 1}, {"from": "Lina", "to": "Crystal Maiden", "width": 1}, {"from": "Lina", "to": "Dragon Knight (Dragon\u0027s Blood)", "width": 1}, {"from": "Lina", "to": "Pangolier", "width": 1}, {"from": "Lina", "to": "Scintillant Waste", "width": 1}, {"from": "Lina", "to": "Mirana (Dragon\u0027s Blood)", "width": 1}, {"from": "Lina", "to": "Mirana", "width": 1}, {"from": "Lina", "to": "Viper", "width": 1}, {"from": "Marci", "to": "Barrowhaven", "width": 1}, {"from": "Marci", "to": "Coedwig", "width": 1}, {"from": "Marci", "to": "Dragon Knights\u0027 Redoubt", "width": 1}, {"from": "Marci", "to": "Hauptstadt", "width": 1}, {"from": "Marci", "to": "Invoker\u0027s Tower", "width": 1}, {"from": "Marci", "to": "Magpie\u0027s Roost", "width": 1}, {"from": "Marci", "to": "Nightsilver Woods (Dragon\u0027s Blood)", "width": 1}, {"from": "Marci", "to": "Temple of Mene (Dragon\u0027s Blood)", "width": 1}, {"from": "Marci", "to": "Selemene (Dragon\u0027s Blood)", "width": 1}, {"from": "Marci", "to": "Worldwyrm", "width": 1}, {"from": "Marci", "to": "Eldwurms (Dragon\u0027s Blood)", "width": 1}, {"from": "Marci", "to": "Bunny", "width": 1}, {"from": "Marci", "to": "Gwanwyn", "width": 1}, {"from": "Marci", "to": "Kashurra", "width": 1}, {"from": "Marci", "to": "Marci\u0027s Mother", "width": 1}, {"from": "Marci", "to": "Nikdo", "width": 1}, {"from": "Marci", "to": "Tihomir", "width": 1}, {"from": "Marci", "to": "Vanari", "width": 1}, {"from": "Marci", "to": "Marci\u0027s Family", "width": 1}, {"from": "Marci", "to": "Air Dragons", "width": 1}, {"from": "Marci", "to": "Eye of the Worldwyrm", "width": 1}, {"from": "Marci", "to": "Shopkeeper\u0027s Gem", "width": 1}, {"from": "Marci", "to": "Maelrawn the Tentacular", "width": 1}, {"from": "Marci", "to": "Lord Maelrawn", "width": 1}, {"from": "Marci", "to": "The Lurker in the Whirlpool", "width": 1}, {"from": "Marci", "to": "Trembling Isle", "width": 1}, {"from": "Marci", "to": "Poseidon", "width": 1}, {"from": "Marci", "to": "11 years old", "width": 1}, {"from": "Marci", "to": "Levianth", "width": 1}, {"from": "Marci", "to": "Knights of the Fold", "width": 1}, {"from": "Marci", "to": "Kunkka", "width": 1}, {"from": "Marci", "to": "Tidehunter", "width": 1}, {"from": "Marci", "to": "Keen", "width": 1}, {"from": "Marci", "to": "Howling Hills", "width": 1}, {"from": "Marci", "to": "Selemene", "width": 1}, {"from": "Marci", "to": "Quirt", "width": 1}, {"from": "Marci", "to": "Sithil", "width": 1}, {"from": "Marci", "to": "Steepstalkers", "width": 1}, {"from": "Marci", "to": "Blink Dagger", "width": 1}, {"from": "Marci", "to": "Bloodthorn", "width": 1}, {"from": "Marci", "to": "Aegis of Champions", "width": 1}, {"from": "Marci", "to": "Mad Moon", "width": 1}, {"from": "Marci", "to": "Artificing", "width": 1}, {"from": "Marci", "to": "Battle of Stonefish Gate", "width": 1}, {"from": "Marci", "to": "Quas", "width": 1}, {"from": "Marci", "to": "Vesture of the Tyrant card", "width": 1}, {"from": "Marci", "to": "Dragon Knight (Dragon\u0027s Blood)", "width": 1}, {"from": "Marci", "to": "Invoker (Dragon\u0027s Blood)", "width": 1}, {"from": "Marci", "to": "Luna (Dragon\u0027s Blood)", "width": 1}, {"from": "Marci", "to": "Davion", "width": 1}, {"from": "Marci", "to": "Invoker", "width": 1}, {"from": "Marci", "to": "Luna", "width": 1}, {"from": "Marci", "to": "Mirana", "width": 1}, {"from": "Marci", "to": "Human", "width": 1}, {"from": "Marci", "to": "Dark Moon Order", "width": 1}, {"from": "Marci", "to": "Nightsilver Woods", "width": 1}, {"from": "Marci", "to": "Temple of Mene", "width": 1}, {"from": "Marci", "to": "Slyrak", "width": 1}, {"from": "Marci", "to": "Bram", "width": 1}, {"from": "Marci", "to": "Sagan", "width": 1}, {"from": "Marci", "to": "Mirana (Dragon\u0027s Blood)", "width": 1}, {"from": "Mirana", "to": "Demon Star", "width": 1}, {"from": "Mirana", "to": "Nightsilver Woods", "width": 1}, {"from": "Mirana", "to": "Shrine of Selemene", "width": 1}, {"from": "Mirana", "to": "Solar Throne", "width": 1}, {"from": "Mirana", "to": "Temple of Mene", "width": 1}, {"from": "Mirana", "to": "Fymryn", "width": 1}, {"from": "Mirana", "to": "Selemene (Dragon\u0027s Blood)", "width": 1}, {"from": "Mirana", "to": "Selemene", "width": 1}, {"from": "Mirana", "to": "Sherzi", "width": 1}, {"from": "Mirana", "to": "The Shopkeeper", "width": 1}, {"from": "Mirana", "to": "Worldwyrm", "width": 1}, {"from": "Mirana", "to": "Dragons (Dragon\u0027s Blood)", "width": 1}, {"from": "Mirana", "to": "Elves (Dragon\u0027s Blood)", "width": 1}, {"from": "Mirana", "to": "Stars", "width": 1}, {"from": "Mirana", "to": "Sagan", "width": 1}, {"from": "Mirana", "to": "Shabarra", "width": 1}, {"from": "Mirana", "to": "Tihomir", "width": 1}, {"from": "Mirana", "to": "Vanari", "width": 1}, {"from": "Mirana", "to": "Air Dragons", "width": 1}, {"from": "Mirana", "to": "Griffins", "width": 1}, {"from": "Mirana", "to": "Litigons", "width": 1}, {"from": "Mirana", "to": "Lunar Dragons", "width": 1}, {"from": "Mirana", "to": "Owlions", "width": 1}, {"from": "Mirana", "to": "Sabre-Lynx", "width": 1}, {"from": "Mirana", "to": "Eye of the Worldwyrm", "width": 1}, {"from": "Mirana", "to": "Dragon\u0027s Fire Whiskey", "width": 1}, {"from": "Mirana", "to": "Luna", "width": 1}, {"from": "Mirana", "to": "Dragon Knight", "width": 1}, {"from": "Mirana", "to": "Human", "width": 1}, {"from": "Mirana", "to": "Griffin", "width": 1}, {"from": "Ursa", "to": "Sangstrath", "width": 1}, {"from": "Ursa", "to": "Ursine", "width": 1}, {"from": "Ursa", "to": "Cholgar", "width": 1}, {"from": "Ursa", "to": "Ravager", "width": 1}, {"from": "Ursa", "to": "Razorwyrm", "width": 1}, {"from": "Ursa", "to": "Enchantress", "width": 1}, {"from": "Ursa", "to": "Lone Druid", "width": 1}, {"from": "Ursa", "to": "Pangolier", "width": 1}, {"from": "Praetorian Guard", "to": "Luna (Dragon\u0027s Blood)", "width": 1}, {"from": "Praetorian Guard", "to": "Mirana (Dragon\u0027s Blood)", "width": 1}, {"from": "Shoehorn", "to": "Herzog", "width": 1}, {"from": "Shoehorn", "to": "Nico Hieronimo", "width": 1}, {"from": "Shoehorn", "to": "Luna (Dragon\u0027s Blood)", "width": 1}, {"from": "Sherzi", "to": "Human", "width": 1}, {"from": "Sherzi", "to": "Worldwyrm", "width": 1}, {"from": "Sherzi", "to": "Mirana\u0027s Grandfather", "width": 1}, {"from": "Sherzi", "to": "Shabarra", "width": 1}, {"from": "Sherzi", "to": "Kashurra", "width": 1}, {"from": "Sherzi", "to": "The Eye", "width": 1}, {"from": "Sherzi", "to": "Eye of the Worldwyrm", "width": 1}, {"from": "Sherzi", "to": "Mirana (Dragon\u0027s Blood)", "width": 1}, {"from": "Kashurra", "to": "The Dream", "width": 1}, {"from": "Kashurra", "to": "Byssrak", "width": 1}, {"from": "Kashurra", "to": "Slyrak", "width": 1}, {"from": "Kashurra", "to": "Worldwyrm", "width": 1}, {"from": "Kashurra", "to": "Dragons (Dragon\u0027s Blood)", "width": 1}, {"from": "Kashurra", "to": "Eldwurms (Dragon\u0027s Blood)", "width": 1}, {"from": "Kashurra", "to": "Kaden", "width": 1}, {"from": "Kashurra", "to": "Arc Warden", "width": 1}, {"from": "Kashurra", "to": "Davion", "width": 1}, {"from": "Kashurra", "to": "Miran\u01ce", "width": 1}, {"from": "Kashurra", "to": "Winter Wyvern", "width": 1}, {"from": "Kashurra", "to": "Dragons", "width": 1}, {"from": "Kashurra", "to": "Eldwurms", "width": 1}, {"from": "Kashurra", "to": "The Thunder", "width": 1}, {"from": "Kashurra", "to": "The Cosmos", "width": 1}, {"from": "Kashurra", "to": "Dire", "width": 1}, {"from": "Kashurra", "to": "Radiant", "width": 1}, {"from": "Kashurra", "to": "Slyr\u00e2k", "width": 1}, {"from": "Kashurra", "to": "Tihomir", "width": 1}, {"from": "Kashurra", "to": "Shabarra", "width": 1}, {"from": "Kashurra", "to": "Void Dragons", "width": 1}, {"from": "Kashurra", "to": "Eye of the Worldwyrm", "width": 1}, {"from": "Kashurra", "to": "Direstone", "width": 1}, {"from": "Kashurra", "to": "Nemesis Stones", "width": 1}, {"from": "Kashurra", "to": "Radiant Ore", "width": 1}, {"from": "Kashurra", "to": "Marci\u0027s Family", "width": 1}, {"from": "Kashurra", "to": "Arc Warden (Dragon\u0027s Blood)", "width": 1}, {"from": "Kashurra", "to": "Dragon Knight (Dragon\u0027s Blood)", "width": 1}, {"from": "Kashurra", "to": "Lina (Dragon\u0027s Blood)", "width": 1}, {"from": "Kashurra", "to": "Mirana (Dragon\u0027s Blood)", "width": 1}, {"from": "Kashurra", "to": "Winter Wyvern (Dragon\u0027s Blood)", "width": 1}, {"from": "Shabarra", "to": "Gwanwyn", "width": 1}, {"from": "Shabarra", "to": "Davion", "width": 1}, {"from": "Shabarra", "to": "Luna", "width": 1}, {"from": "Shabarra", "to": "Human", "width": 1}, {"from": "Shabarra", "to": "Slyrak", "width": 1}, {"from": "Shabarra", "to": "Vanari", "width": 1}, {"from": "Shabarra", "to": "Eye of the Worldwyrm", "width": 1}, {"from": "Shabarra", "to": "Dragon Knight (Dragon\u0027s Blood)", "width": 1}, {"from": "Shabarra", "to": "Lina (Dragon\u0027s Blood)", "width": 1}, {"from": "Shabarra", "to": "Luna (Dragon\u0027s Blood)", "width": 1}, {"from": "Shabarra", "to": "Mirana (Dragon\u0027s Blood)", "width": 1}, {"from": "Shabarra", "to": "Oracle (Dragon\u0027s Blood)", "width": 1}, {"from": "Tihomir", "to": "Human", "width": 1}, {"from": "Tihomir", "to": "Sagan", "width": 1}, {"from": "Tihomir", "to": "Vanari", "width": 1}, {"from": "Tihomir", "to": "Lina (Dragon\u0027s Blood)", "width": 1}, {"from": "Tihomir", "to": "Mirana (Dragon\u0027s Blood)", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"gravitationalConstant": -8000, "centralGravity": 4, "springLength": 500, "springConstant": 0.002, "damping": 0.15, "avoidOverlap": 0.2}, "maxVelocity": 70, "minVelocity": 0.75}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

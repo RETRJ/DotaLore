@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1600px;
+                 height: 1600px;
+                 background-color: #171717;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 0, "id": "Eztzhok", "label": "Eztzhok", "shape": "dot", "size": 63}, {"font": {"color": "white"}, "group": 0, "id": "Flayed Twins", "label": "Flayed Twins", "shape": "dot", "size": 19}, {"font": {"color": "white"}, "group": 1, "id": "Demons", "label": "Demons", "shape": "dot", "size": 62}, {"font": {"color": "white"}, "group": 0, "id": "Bloodseeker", "label": "Bloodseeker", "shape": "dot", "size": 19}, {"font": {"color": "white"}, "group": 0, "id": "Xhacatocatl", "label": "Xhacatocatl", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Pudge", "label": "Pudge", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Mars", "label": "Mars", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Bonehunters", "label": "Bonehunters", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Omniscience", "label": "Omniscience", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Iczoxtotec", "label": "Iczoxtotec", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Foulfell (Dragon\u0027s Blood)", "label": "Foulfell (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Foulfell", "label": "Foulfell", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Isle of Masks", "label": "Isle of Masks", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Lesser Hells", "label": "Lesser Hells", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Outer Hells", "label": "Outer Hells", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Seven Hells", "label": "Seven Hells", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Shadow Demon", "label": "Shadow Demon", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Shadow Fiend", "label": "Shadow Fiend", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Terrorblade", "label": "Terrorblade", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Doom", "label": "Doom", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Legion Commander", "label": "Legion Commander", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Demons of the Cataract", "label": "Demons of the Cataract", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Abyssal Horde", "label": "Abyssal Horde", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Court of Ristul", "label": "Court of Ristul", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Vashundol", "label": "Vashundol", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Abysm", "label": "Abysm", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Aziyog", "label": "Aziyog", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Maraxiform", "label": "Maraxiform", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Abzidian", "label": "Abzidian", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Demon Lords", "label": "Demon Lords", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Necronomicon", "label": "Necronomicon", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Book of the Dead", "label": "Book of the Dead", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Anessix", "label": "Anessix", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Buki\u0027vak", "label": "Buki\u0027vak", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Knogh", "label": "Knogh", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Quirt", "label": "Quirt", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Zo", "label": "Zo", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Incubus", "label": "Incubus", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Dark Rift", "label": "Dark Rift", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Demon Witch", "label": "Demon Witch", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Chaos", "label": "Chaos", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Ozkavosh", "label": "Ozkavosh", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Umbral Pact", "label": "Umbral Pact", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Juggernaut", "label": "Juggernaut", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Terrorblade (Dragon\u0027s Blood)", "label": "Terrorblade (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Underlord", "label": "Underlord", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Warlock", "label": "Warlock", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Roseleaf", "label": "Roseleaf", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Hlotl", "label": "Hlotl", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Huskar", "label": "Huskar", "shape": "dot", "size": 11}]);
+                  edges = new vis.DataSet([{"from": "Eztzhok", "to": "Flayed Twins", "width": 1}, {"from": "Eztzhok", "to": "Demons", "width": 1}, {"from": "Eztzhok", "to": "Bloodseeker", "width": 1}, {"from": "Flayed Twins", "to": "Xhacatocatl", "width": 1}, {"from": "Flayed Twins", "to": "Bloodseeker", "width": 1}, {"from": "Flayed Twins", "to": "Pudge", "width": 1}, {"from": "Flayed Twins", "to": "Mars", "width": 1}, {"from": "Flayed Twins", "to": "Bonehunters", "width": 1}, {"from": "Flayed Twins", "to": "Omniscience", "width": 1}, {"from": "Flayed Twins", "to": "Iczoxtotec", "width": 1}, {"from": "Demons", "to": "Foulfell (Dragon\u0027s Blood)", "width": 1}, {"from": "Demons", "to": "Foulfell", "width": 1}, {"from": "Demons", "to": "Isle of Masks", "width": 1}, {"from": "Demons", "to": "Lesser Hells", "width": 1}, {"from": "Demons", "to": "Outer Hells", "width": 1}, {"from": "Demons", "to": "Seven Hells", "width": 1}, {"from": "Demons", "to": "Shadow Demon", "width": 1}, {"from": "Demons", "to": "Shadow Fiend", "width": 1}, {"from": "Demons", "to": "Terrorblade", "width": 1}, {"from": "Demons", "to": "Doom", "width": 1}, {"from": "Demons", "to": "Legion Commander", "width": 1}, {"from": "Demons", "to": "Demons of the Cataract", "width": 1}, {"from": "Demons", "to": "Abyssal Horde", "width": 1}, {"from": "Demons", "to": "Court of Ristul", "width": 1}, {"from": "Demons", "to": "Vashundol", "width": 1}, {"from": "Demons", "to": "Abysm", "width": 1}, {"from": "Demons", "to": "Aziyog", "width": 1}, {"from": "Demons", "to": "Maraxiform", "width": 1}, {"from": "Demons", "to": "Abzidian", "width": 1}, {"from": "Demons", "to": "Demon Lords", "width": 1}, {"from": "Demons", "to": "Necronomicon", "width": 1}, {"from": "Demons", "to": "Book of the Dead", "width": 1}, {"from": "Demons", "to": "Anessix", "width": 1}, {"from": "Demons", "to": "Buki\u0027vak", "width": 1}, {"from": "Demons", "to": "Knogh", "width": 1}, {"from": "Demons", "to": "Quirt", "width": 1}, {"from": "Demons", "to": "Zo", "width": 1}, {"from": "Demons", "to": "Incubus", "width": 1}, {"from": "Demons", "to": "Dark Rift", "width": 1}, {"from": "Demons", "to": "Demon Witch", "width": 1}, {"from": "Demons", "to": "Chaos", "width": 1}, {"from": "Demons", "to": "Ozkavosh", "width": 1}, {"from": "Demons", "to": "Umbral Pact", "width": 1}, {"from": "Demons", "to": "Juggernaut", "width": 1}, {"from": "Demons", "to": "Terrorblade (Dragon\u0027s Blood)", "width": 1}, {"from": "Demons", "to": "Underlord", "width": 1}, {"from": "Demons", "to": "Warlock", "width": 1}, {"from": "Bloodseeker", "to": "Roseleaf", "width": 1}, {"from": "Bloodseeker", "to": "Xhacatocatl", "width": 1}, {"from": "Bloodseeker", "to": "Iczoxtotec", "width": 1}, {"from": "Bloodseeker", "to": "Bonehunters", "width": 1}, {"from": "Bloodseeker", "to": "Hlotl", "width": 1}, {"from": "Bloodseeker", "to": "Huskar", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"gravitationalConstant": -8000, "centralGravity": 4, "springLength": 500, "springConstant": 0.002, "damping": 0.15, "avoidOverlap": 0.2}, "maxVelocity": 70, "minVelocity": 0.75}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1600px;
+                 height: 1600px;
+                 background-color: #171717;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 0, "id": "Bounty Hunter", "label": "Bounty Hunter", "shape": "dot", "size": 41}, {"font": {"color": "white"}, "group": 0, "id": "Gondar\u0027s Language", "label": "Gondar\u0027s Language", "shape": "dot", "size": 61}, {"font": {"color": "white"}, "group": 0, "id": "Highseat", "label": "Highseat", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Qaldin", "label": "Qaldin", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Revtel", "label": "Revtel", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "White Spire", "label": "White Spire", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Solar Goddess", "label": "Solar Goddess", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Ursine", "label": "Ursine", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Brass Herald", "label": "Brass Herald", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Crimson Cut-throat", "label": "Crimson Cut-throat", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Goff", "label": "Goff", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Mireska\u0027s Father", "label": "Mireska\u0027s Father", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Soruq", "label": "Soruq", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "The Second Disciple", "label": "The Second Disciple", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Tybara", "label": "Tybara", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "White Cape", "label": "White Cape", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Pangolin Guild", "label": "Pangolin Guild", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Qaldin Assassins", "label": "Qaldin Assassins", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Hellkite", "label": "Hellkite", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Meepo", "label": "Meepo", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Pangolier", "label": "Pangolier", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Djinn", "label": "Djinn", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Giants", "label": "Giants", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Scintillant Waste", "label": "Scintillant Waste", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Dark Willow", "label": "Dark Willow", "shape": "dot", "size": 11}]);
+                  edges = new vis.DataSet([{"from": "Bounty Hunter", "to": "Gondar\u0027s Language", "width": 1}, {"from": "Bounty Hunter", "to": "Highseat", "width": 1}, {"from": "Bounty Hunter", "to": "Qaldin", "width": 1}, {"from": "Bounty Hunter", "to": "Revtel", "width": 1}, {"from": "Bounty Hunter", "to": "White Spire", "width": 1}, {"from": "Bounty Hunter", "to": "Solar Goddess", "width": 1}, {"from": "Bounty Hunter", "to": "Ursine", "width": 1}, {"from": "Bounty Hunter", "to": "Brass Herald", "width": 1}, {"from": "Bounty Hunter", "to": "Crimson Cut-throat", "width": 1}, {"from": "Bounty Hunter", "to": "Goff", "width": 1}, {"from": "Bounty Hunter", "to": "Mireska\u0027s Father", "width": 1}, {"from": "Bounty Hunter", "to": "Soruq", "width": 1}, {"from": "Bounty Hunter", "to": "The Second Disciple", "width": 1}, {"from": "Bounty Hunter", "to": "Tybara", "width": 1}, {"from": "Bounty Hunter", "to": "White Cape", "width": 1}, {"from": "Bounty Hunter", "to": "Pangolin Guild", "width": 1}, {"from": "Bounty Hunter", "to": "Qaldin Assassins", "width": 1}, {"from": "Bounty Hunter", "to": "Hellkite", "width": 1}, {"from": "Bounty Hunter", "to": "Meepo", "width": 1}, {"from": "Bounty Hunter", "to": "Pangolier", "width": 1}, {"from": "Bounty Hunter", "to": "Djinn", "width": 1}, {"from": "Bounty Hunter", "to": "Giants", "width": 1}, {"from": "Bounty Hunter", "to": "Scintillant Waste", "width": 1}, {"from": "Bounty Hunter", "to": "Dark Willow", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"gravitationalConstant": -8000, "centralGravity": 4, "springLength": 500, "springConstant": 0.002, "damping": 0.15, "avoidOverlap": 0.2}, "maxVelocity": 70, "minVelocity": 0.75}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

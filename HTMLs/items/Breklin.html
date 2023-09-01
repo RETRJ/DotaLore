@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1600px;
+                 height: 1600px;
+                 background-color: #171717;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 0, "id": "Breklin", "label": "Breklin", "shape": "dot", "size": 67}, {"font": {"color": "white"}, "group": 1, "id": "Sundered Moon", "label": "Sundered Moon", "shape": "dot", "size": 15}, {"font": {"color": "white"}, "group": 2, "id": "Creatures of Darkness", "label": "Creatures of Darkness", "shape": "dot", "size": 19}, {"font": {"color": "white"}, "group": 3, "id": "Monkey King", "label": "Monkey King", "shape": "dot", "size": 30}, {"font": {"color": "white"}, "group": 4, "id": "Troll Warlord", "label": "Troll Warlord", "shape": "dot", "size": 20}, {"font": {"color": "white"}, "group": 0, "id": "White Spire", "label": "White Spire", "shape": "dot", "size": 26}, {"font": {"color": "white"}, "group": 0, "id": "Grek", "label": "Grek", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 1, "id": "Broodmother", "label": "Broodmother", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Quirt", "label": "Quirt", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Sithil", "label": "Sithil", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Night Stalker", "label": "Night Stalker", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Dawnbreaker", "label": "Dawnbreaker", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Void Spirit", "label": "Void Spirit", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Children of Light", "label": "Children of Light", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Terrene Plane", "label": "Terrene Plane", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "The First Day", "label": "The First Day", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "The Void", "label": "The Void", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Narrow Maze", "label": "Narrow Maze", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Nightsilver Woods", "label": "Nightsilver Woods", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Palace of Hurra\u0027agdu", "label": "Palace of Hurra\u0027agdu", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Eternal Crucible", "label": "Eternal Crucible", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Ruyi Jingu Bang", "label": "Ruyi Jingu Bang", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Book of the Dead", "label": "Book of the Dead", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Chaos", "label": "Chaos", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Beastmaster", "label": "Beastmaster", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Razor", "label": "Razor", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Tidehunter", "label": "Tidehunter", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Ember Spirit", "label": "Ember Spirit", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Lycan", "label": "Lycan", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Monkey King Bar", "label": "Monkey King Bar", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Bleeding Hills", "label": "Bleeding Hills", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "The Hoven", "label": "The Hoven", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Trolls", "label": "Trolls", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Shadow Shaman", "label": "Shadow Shaman", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Troll", "label": "Troll", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Keen", "label": "Keen", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Oglodi", "label": "Oglodi", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "The Shopkeeper", "label": "The Shopkeeper", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Revtel", "label": "Revtel", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Stonehall", "label": "Stonehall", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Dark Willow", "label": "Dark Willow", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Meepo", "label": "Meepo", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Pangolier", "label": "Pangolier", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Bounty Hunter", "label": "Bounty Hunter", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Hellbears", "label": "Hellbears", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Anessix", "label": "Anessix", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Springfoot", "label": "Springfoot", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Verdant Guild", "label": "Verdant Guild", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Golems", "label": "Golems", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Thunderhides", "label": "Thunderhides", "shape": "dot", "size": 12}]);
+                  edges = new vis.DataSet([{"from": "Breklin", "to": "Sundered Moon", "width": 1}, {"from": "Breklin", "to": "Creatures of Darkness", "width": 1}, {"from": "Breklin", "to": "Monkey King", "width": 1}, {"from": "Breklin", "to": "Troll Warlord", "width": 1}, {"from": "Breklin", "to": "White Spire", "width": 1}, {"from": "Breklin", "to": "Grek", "width": 1}, {"from": "Sundered Moon", "to": "Monkey King", "width": 1}, {"from": "Sundered Moon", "to": "Broodmother", "width": 1}, {"from": "Sundered Moon", "to": "Quirt", "width": 1}, {"from": "Sundered Moon", "to": "Sithil", "width": 1}, {"from": "Creatures of Darkness", "to": "Night Stalker", "width": 1}, {"from": "Creatures of Darkness", "to": "Dawnbreaker", "width": 1}, {"from": "Creatures of Darkness", "to": "Void Spirit", "width": 1}, {"from": "Creatures of Darkness", "to": "Children of Light", "width": 1}, {"from": "Creatures of Darkness", "to": "Terrene Plane", "width": 1}, {"from": "Creatures of Darkness", "to": "The First Day", "width": 1}, {"from": "Creatures of Darkness", "to": "The Void", "width": 1}, {"from": "Monkey King", "to": "Narrow Maze", "width": 1}, {"from": "Monkey King", "to": "Nightsilver Woods", "width": 1}, {"from": "Monkey King", "to": "Palace of Hurra\u0027agdu", "width": 1}, {"from": "Monkey King", "to": "Eternal Crucible", "width": 1}, {"from": "Monkey King", "to": "Ruyi Jingu Bang", "width": 1}, {"from": "Monkey King", "to": "Book of the Dead", "width": 1}, {"from": "Monkey King", "to": "Chaos", "width": 1}, {"from": "Monkey King", "to": "Broodmother", "width": 1}, {"from": "Monkey King", "to": "Beastmaster", "width": 1}, {"from": "Monkey King", "to": "Razor", "width": 1}, {"from": "Monkey King", "to": "Tidehunter", "width": 1}, {"from": "Monkey King", "to": "Ember Spirit", "width": 1}, {"from": "Monkey King", "to": "Lycan", "width": 1}, {"from": "Monkey King", "to": "Monkey King Bar", "width": 1}, {"from": "Troll Warlord", "to": "Bleeding Hills", "width": 1}, {"from": "Troll Warlord", "to": "The Hoven", "width": 1}, {"from": "Troll Warlord", "to": "Trolls", "width": 1}, {"from": "Troll Warlord", "to": "Shadow Shaman", "width": 1}, {"from": "Troll Warlord", "to": "Troll", "width": 1}, {"from": "Troll Warlord", "to": "Keen", "width": 1}, {"from": "Troll Warlord", "to": "Oglodi", "width": 1}, {"from": "Troll Warlord", "to": "The Shopkeeper", "width": 1}, {"from": "White Spire", "to": "Revtel", "width": 1}, {"from": "White Spire", "to": "Stonehall", "width": 1}, {"from": "White Spire", "to": "Dark Willow", "width": 1}, {"from": "White Spire", "to": "Meepo", "width": 1}, {"from": "White Spire", "to": "Pangolier", "width": 1}, {"from": "White Spire", "to": "Bounty Hunter", "width": 1}, {"from": "White Spire", "to": "Hellbears", "width": 1}, {"from": "White Spire", "to": "Anessix", "width": 1}, {"from": "White Spire", "to": "Springfoot", "width": 1}, {"from": "White Spire", "to": "Verdant Guild", "width": 1}, {"from": "White Spire", "to": "Golems", "width": 1}, {"from": "White Spire", "to": "Thunderhides", "width": 1}, {"from": "Grek", "to": "Hellbears", "width": 1}, {"from": "Grek", "to": "Thunderhides", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"gravitationalConstant": -8000, "centralGravity": 4, "springLength": 500, "springConstant": 0.002, "damping": 0.15, "avoidOverlap": 0.2}, "maxVelocity": 70, "minVelocity": 0.75}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

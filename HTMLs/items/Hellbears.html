@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1600px;
+                 height: 1600px;
+                 background-color: #171717;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 0, "id": "Hellbears", "label": "Hellbears", "shape": "dot", "size": 69}, {"font": {"color": "white"}, "group": 1, "id": "Howling Weald", "label": "Howling Weald", "shape": "dot", "size": 29}, {"font": {"color": "white"}, "group": 2, "id": "Marrowfell Hunters", "label": "Marrowfell Hunters", "shape": "dot", "size": 34}, {"font": {"color": "white"}, "group": 3, "id": "Roseleaf", "label": "Roseleaf", "shape": "dot", "size": 39}, {"font": {"color": "white"}, "group": 0, "id": "Revtel", "label": "Revtel", "shape": "dot", "size": 34}, {"font": {"color": "white"}, "group": 4, "id": "White Spire", "label": "White Spire", "shape": "dot", "size": 26}, {"font": {"color": "white"}, "group": 0, "id": "Kwerthias", "label": "Kwerthias", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 4, "id": "Grek", "label": "Grek", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 0, "id": "Iron Talon", "label": "Iron Talon", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Lycans", "label": "Lycans", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Ogres", "label": "Ogres", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Bonemeal Ogres", "label": "Bonemeal Ogres", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Longclaw Clan", "label": "Longclaw Clan", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Kalabor Desert", "label": "Kalabor Desert", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Bonemeal Ridge", "label": "Bonemeal Ridge", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Silkmire Pass", "label": "Silkmire Pass", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Temple of Ermacor", "label": "Temple of Ermacor", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Lucius Longclaw", "label": "Lucius Longclaw", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Bogdugg", "label": "Bogdugg", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Gallaron", "label": "Gallaron", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Dire Wolves", "label": "Dire Wolves", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Longclaw\u0027s Amulet", "label": "Longclaw\u0027s Amulet", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Dire Wolf", "label": "Dire Wolf", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Centaurs", "label": "Centaurs", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Prowlers", "label": "Prowlers", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Mavor", "label": "Mavor", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Centaur Warrunner", "label": "Centaur Warrunner", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Beastmaster", "label": "Beastmaster", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Lina", "label": "Lina", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Lycan", "label": "Lycan", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Vhoul", "label": "Vhoul", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Bronze Legion", "label": "Bronze Legion", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Red Mist", "label": "Red Mist", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Rix", "label": "Rix", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Thunderhides", "label": "Thunderhides", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 2, "id": "Wildwings", "label": "Wildwings", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Vhoul Rebellion", "label": "Vhoul Rebellion", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Pangolier", "label": "Pangolier", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 3, "id": "Lightglass", "label": "Lightglass", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Redmaw", "label": "Redmaw", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Dark Willow", "label": "Dark Willow", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 3, "id": "Treant Protector", "label": "Treant Protector", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Bloodseeker", "label": "Bloodseeker", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Timbersaw", "label": "Timbersaw", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Legion Commander", "label": "Legion Commander", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Treant Protectors", "label": "Treant Protectors", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Bullsnake Flag", "label": "Bullsnake Flag", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Aubgraw", "label": "Aubgraw", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Marcus", "label": "Marcus", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Mial", "label": "Mial", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Springwind", "label": "Springwind", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Vanessa", "label": "Vanessa", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Magnus", "label": "Magnus", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Fae Realm", "label": "Fae Realm", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Bounty Hunter", "label": "Bounty Hunter", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Phantom Assassin", "label": "Phantom Assassin", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Fae", "label": "Fae", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Pyrexae Dragons", "label": "Pyrexae Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Sunbreeze Family", "label": "Sunbreeze Family", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Sisters of the Veil", "label": "Sisters of the Veil", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Stonehall", "label": "Stonehall", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Mireska\u0027s Father", "label": "Mireska\u0027s Father", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Brass Herald", "label": "Brass Herald", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Jex", "label": "Jex", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Lowenplatt", "label": "Lowenplatt", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Myrian", "label": "Myrian", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "O\u0027nia", "label": "O\u0027nia", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Meepo", "label": "Meepo", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Anessix", "label": "Anessix", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Breklin", "label": "Breklin", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 4, "id": "Springfoot", "label": "Springfoot", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Verdant Guild", "label": "Verdant Guild", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Golems", "label": "Golems", "shape": "dot", "size": 11}]);
+                  edges = new vis.DataSet([{"from": "Hellbears", "to": "Howling Weald", "width": 1}, {"from": "Hellbears", "to": "Marrowfell Hunters", "width": 1}, {"from": "Hellbears", "to": "Roseleaf", "width": 1}, {"from": "Hellbears", "to": "Revtel", "width": 1}, {"from": "Hellbears", "to": "White Spire", "width": 1}, {"from": "Hellbears", "to": "Kwerthias", "width": 1}, {"from": "Hellbears", "to": "Grek", "width": 1}, {"from": "Hellbears", "to": "Iron Talon", "width": 1}, {"from": "Howling Weald", "to": "Lycans", "width": 1}, {"from": "Howling Weald", "to": "Ogres", "width": 1}, {"from": "Howling Weald", "to": "Bonemeal Ogres", "width": 1}, {"from": "Howling Weald", "to": "Longclaw Clan", "width": 1}, {"from": "Howling Weald", "to": "Kalabor Desert", "width": 1}, {"from": "Howling Weald", "to": "Bonemeal Ridge", "width": 1}, {"from": "Howling Weald", "to": "Silkmire Pass", "width": 1}, {"from": "Howling Weald", "to": "Temple of Ermacor", "width": 1}, {"from": "Howling Weald", "to": "Lucius Longclaw", "width": 1}, {"from": "Howling Weald", "to": "Bogdugg", "width": 1}, {"from": "Howling Weald", "to": "Gallaron", "width": 1}, {"from": "Howling Weald", "to": "Dire Wolves", "width": 1}, {"from": "Howling Weald", "to": "Longclaw\u0027s Amulet", "width": 1}, {"from": "Howling Weald", "to": "Dire Wolf", "width": 1}, {"from": "Marrowfell Hunters", "to": "Centaurs", "width": 1}, {"from": "Marrowfell Hunters", "to": "Prowlers", "width": 1}, {"from": "Marrowfell Hunters", "to": "Mavor", "width": 1}, {"from": "Marrowfell Hunters", "to": "Centaur Warrunner", "width": 1}, {"from": "Marrowfell Hunters", "to": "Beastmaster", "width": 1}, {"from": "Marrowfell Hunters", "to": "Lina", "width": 1}, {"from": "Marrowfell Hunters", "to": "Lycan", "width": 1}, {"from": "Marrowfell Hunters", "to": "Vhoul", "width": 1}, {"from": "Marrowfell Hunters", "to": "Ogres", "width": 1}, {"from": "Marrowfell Hunters", "to": "Bronze Legion", "width": 1}, {"from": "Marrowfell Hunters", "to": "Red Mist", "width": 1}, {"from": "Marrowfell Hunters", "to": "Roseleaf", "width": 1}, {"from": "Marrowfell Hunters", "to": "Kalabor Desert", "width": 1}, {"from": "Marrowfell Hunters", "to": "Rix", "width": 1}, {"from": "Marrowfell Hunters", "to": "Thunderhides", "width": 1}, {"from": "Marrowfell Hunters", "to": "Wildwings", "width": 1}, {"from": "Marrowfell Hunters", "to": "Vhoul Rebellion", "width": 1}, {"from": "Marrowfell Hunters", "to": "Pangolier", "width": 1}, {"from": "Roseleaf", "to": "Lightglass", "width": 1}, {"from": "Roseleaf", "to": "Redmaw", "width": 1}, {"from": "Roseleaf", "to": "Dark Willow", "width": 1}, {"from": "Roseleaf", "to": "Treant Protector", "width": 1}, {"from": "Roseleaf", "to": "Bloodseeker", "width": 1}, {"from": "Roseleaf", "to": "Timbersaw", "width": 1}, {"from": "Roseleaf", "to": "Legion Commander", "width": 1}, {"from": "Roseleaf", "to": "Treant Protectors", "width": 1}, {"from": "Roseleaf", "to": "Bronze Legion", "width": 1}, {"from": "Roseleaf", "to": "Red Mist", "width": 1}, {"from": "Roseleaf", "to": "Bullsnake Flag", "width": 1}, {"from": "Roseleaf", "to": "Prowlers", "width": 1}, {"from": "Roseleaf", "to": "Aubgraw", "width": 1}, {"from": "Roseleaf", "to": "Marcus", "width": 1}, {"from": "Roseleaf", "to": "Mavor", "width": 1}, {"from": "Roseleaf", "to": "Mial", "width": 1}, {"from": "Roseleaf", "to": "Springwind", "width": 1}, {"from": "Roseleaf", "to": "Vanessa", "width": 1}, {"from": "Roseleaf", "to": "Thunderhides", "width": 1}, {"from": "Roseleaf", "to": "Magnus", "width": 1}, {"from": "Revtel", "to": "Fae Realm", "width": 1}, {"from": "Revtel", "to": "Dark Willow", "width": 1}, {"from": "Revtel", "to": "Bounty Hunter", "width": 1}, {"from": "Revtel", "to": "Phantom Assassin", "width": 1}, {"from": "Revtel", "to": "Fae", "width": 1}, {"from": "Revtel", "to": "Pyrexae Dragons", "width": 1}, {"from": "Revtel", "to": "Sunbreeze Family", "width": 1}, {"from": "Revtel", "to": "Sisters of the Veil", "width": 1}, {"from": "Revtel", "to": "White Spire", "width": 1}, {"from": "Revtel", "to": "Stonehall", "width": 1}, {"from": "Revtel", "to": "Mireska\u0027s Father", "width": 1}, {"from": "Revtel", "to": "Kwerthias", "width": 1}, {"from": "Revtel", "to": "Brass Herald", "width": 1}, {"from": "Revtel", "to": "Jex", "width": 1}, {"from": "Revtel", "to": "Lowenplatt", "width": 1}, {"from": "Revtel", "to": "Myrian", "width": 1}, {"from": "Revtel", "to": "O\u0027nia", "width": 1}, {"from": "Revtel", "to": "Pangolier", "width": 1}, {"from": "White Spire", "to": "Stonehall", "width": 1}, {"from": "White Spire", "to": "Dark Willow", "width": 1}, {"from": "White Spire", "to": "Meepo", "width": 1}, {"from": "White Spire", "to": "Pangolier", "width": 1}, {"from": "White Spire", "to": "Bounty Hunter", "width": 1}, {"from": "White Spire", "to": "Anessix", "width": 1}, {"from": "White Spire", "to": "Breklin", "width": 1}, {"from": "White Spire", "to": "Springfoot", "width": 1}, {"from": "White Spire", "to": "Verdant Guild", "width": 1}, {"from": "White Spire", "to": "Golems", "width": 1}, {"from": "White Spire", "to": "Thunderhides", "width": 1}, {"from": "Kwerthias", "to": "Phantom Assassin", "width": 1}, {"from": "Grek", "to": "Breklin", "width": 1}, {"from": "Grek", "to": "Thunderhides", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"gravitationalConstant": -8000, "centralGravity": 4, "springLength": 500, "springConstant": 0.002, "damping": 0.15, "avoidOverlap": 0.2}, "maxVelocity": 70, "minVelocity": 0.75}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1600px;
+                 height: 1600px;
+                 background-color: #171717;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 0, "id": "Crimson Wyvern", "label": "Crimson Wyvern", "shape": "dot", "size": 63}, {"font": {"color": "white"}, "group": 1, "id": "Dragons", "label": "Dragons", "shape": "dot", "size": 99}, {"font": {"color": "white"}, "group": 2, "id": "Dragon Knight", "label": "Dragon Knight", "shape": "dot", "size": 47}, {"font": {"color": "white"}, "group": 0, "id": "Wyverns", "label": "Wyverns", "shape": "dot", "size": 18}, {"font": {"color": "white"}, "group": 1, "id": "Dragon Hold", "label": "Dragon Hold", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Dragon Knights\u0027 Redoubt", "label": "Dragon Knights\u0027 Redoubt", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Isle of Masks", "label": "Isle of Masks", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "The Dream", "label": "The Dream", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Ultimyr Archives", "label": "Ultimyr Archives", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Aethrak", "label": "Aethrak", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Byssrak", "label": "Byssrak", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Indrak", "label": "Indrak", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Lirrak", "label": "Lirrak", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Orrak", "label": "Orrak", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Slyrak", "label": "Slyrak", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Uldorak", "label": "Uldorak", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Vahdrak", "label": "Vahdrak", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Worldwyrm", "label": "Worldwyrm", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Jakiro", "label": "Jakiro", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Lina", "label": "Lina", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Puck", "label": "Puck", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Winter Wyvern", "label": "Winter Wyvern", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 2, "id": "Dragon Clan", "label": "Dragon Clan", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Eldwurms", "label": "Eldwurms", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Scaled Knights of Uthorian", "label": "Scaled Knights of Uthorian", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Desert of Misrule", "label": "Desert of Misrule", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Akakiryu", "label": "Akakiryu", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Ambinderath", "label": "Ambinderath", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Karaul Silverwing", "label": "Karaul Silverwing", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Vyxia", "label": "Vyxia", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Black Dragons", "label": "Black Dragons", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Desert Wyrm", "label": "Desert Wyrm", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Drakinds", "label": "Drakinds", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Dragon Toad", "label": "Dragon Toad", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Iron Dragons", "label": "Iron Dragons", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Lunar Dragons", "label": "Lunar Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Netherdrakes", "label": "Netherdrakes", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Pyrexae Dragons", "label": "Pyrexae Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Razorwyrm", "label": "Razorwyrm", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Sea Dragons", "label": "Sea Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Undead Dragons", "label": "Undead Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Eldwurms (Dragon\u0027s Blood)", "label": "Eldwurms (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Kaden", "label": "Kaden", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Kashurra", "label": "Kashurra", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Dragon Clan (Dragon\u0027s Blood)", "label": "Dragon Clan (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Dragon Knights", "label": "Dragon Knights", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Air Dragons", "label": "Air Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Chaos Dragons", "label": "Chaos Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Druffins", "label": "Druffins", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Earth Dragons", "label": "Earth Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Ember Dragons", "label": "Ember Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Ionic Dragons", "label": "Ionic Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Locuthi", "label": "Locuthi", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Luminous Dragons", "label": "Luminous Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Void Dragons", "label": "Void Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Water Dragons", "label": "Water Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Dragon\u0027s Fire Whiskey", "label": "Dragon\u0027s Fire Whiskey", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Azure Dragons", "label": "Azure Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Crystal Maiden (Dragon\u0027s Blood)", "label": "Crystal Maiden (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Juggernaut", "label": "Juggernaut", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Lina (Dragon\u0027s Blood)", "label": "Lina (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Mirana (Dragon\u0027s Blood)", "label": "Mirana (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Terrorblade (Dragon\u0027s Blood)", "label": "Terrorblade (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Candoness", "label": "Candoness", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Elemental Plane", "label": "Elemental Plane", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Dowager Queen Tansis XII", "label": "Dowager Queen Tansis XII", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Fr\u00fchling", "label": "Fr\u00fchling", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Tansis XII", "label": "Tansis XII", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Tansis XIII", "label": "Tansis XIII", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Named Swords", "label": "Named Swords", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Wyrmblade", "label": "Wyrmblade", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Crystal Maiden", "label": "Crystal Maiden", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Lich", "label": "Lich", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Human", "label": "Human", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Anessix", "label": "Anessix", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Lone Druid", "label": "Lone Druid", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Mirana", "label": "Mirana", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Aghanim", "label": "Aghanim", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Dragon Lance", "label": "Dragon Lance", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Hurricane Pike", "label": "Hurricane Pike", "shape": "dot", "size": 11}]);
+                  edges = new vis.DataSet([{"from": "Crimson Wyvern", "to": "Dragons", "width": 1}, {"from": "Crimson Wyvern", "to": "Dragon Knight", "width": 1}, {"from": "Crimson Wyvern", "to": "Wyverns", "width": 1}, {"from": "Dragons", "to": "Dragon Hold", "width": 1}, {"from": "Dragons", "to": "Dragon Knights\u0027 Redoubt", "width": 1}, {"from": "Dragons", "to": "Isle of Masks", "width": 1}, {"from": "Dragons", "to": "The Dream", "width": 1}, {"from": "Dragons", "to": "Ultimyr Archives", "width": 1}, {"from": "Dragons", "to": "Aethrak", "width": 1}, {"from": "Dragons", "to": "Byssrak", "width": 1}, {"from": "Dragons", "to": "Indrak", "width": 1}, {"from": "Dragons", "to": "Lirrak", "width": 1}, {"from": "Dragons", "to": "Orrak", "width": 1}, {"from": "Dragons", "to": "Slyrak", "width": 1}, {"from": "Dragons", "to": "Uldorak", "width": 1}, {"from": "Dragons", "to": "Vahdrak", "width": 1}, {"from": "Dragons", "to": "Worldwyrm", "width": 1}, {"from": "Dragons", "to": "Dragon Knight", "width": 1}, {"from": "Dragons", "to": "Jakiro", "width": 1}, {"from": "Dragons", "to": "Lina", "width": 1}, {"from": "Dragons", "to": "Puck", "width": 1}, {"from": "Dragons", "to": "Winter Wyvern", "width": 1}, {"from": "Dragons", "to": "Dragon Clan", "width": 1}, {"from": "Dragons", "to": "Eldwurms", "width": 1}, {"from": "Dragons", "to": "Scaled Knights of Uthorian", "width": 1}, {"from": "Dragons", "to": "Desert of Misrule", "width": 1}, {"from": "Dragons", "to": "Akakiryu", "width": 1}, {"from": "Dragons", "to": "Ambinderath", "width": 1}, {"from": "Dragons", "to": "Karaul Silverwing", "width": 1}, {"from": "Dragons", "to": "Vyxia", "width": 1}, {"from": "Dragons", "to": "Black Dragons", "width": 1}, {"from": "Dragons", "to": "Desert Wyrm", "width": 1}, {"from": "Dragons", "to": "Drakinds", "width": 1}, {"from": "Dragons", "to": "Dragon Toad", "width": 1}, {"from": "Dragons", "to": "Iron Dragons", "width": 1}, {"from": "Dragons", "to": "Lunar Dragons", "width": 1}, {"from": "Dragons", "to": "Netherdrakes", "width": 1}, {"from": "Dragons", "to": "Pyrexae Dragons", "width": 1}, {"from": "Dragons", "to": "Razorwyrm", "width": 1}, {"from": "Dragons", "to": "Sea Dragons", "width": 1}, {"from": "Dragons", "to": "Undead Dragons", "width": 1}, {"from": "Dragons", "to": "Wyverns", "width": 1}, {"from": "Dragons", "to": "Eldwurms (Dragon\u0027s Blood)", "width": 1}, {"from": "Dragons", "to": "Kaden", "width": 1}, {"from": "Dragons", "to": "Kashurra", "width": 1}, {"from": "Dragons", "to": "Dragon Clan (Dragon\u0027s Blood)", "width": 1}, {"from": "Dragons", "to": "Dragon Knights", "width": 1}, {"from": "Dragons", "to": "Air Dragons", "width": 1}, {"from": "Dragons", "to": "Chaos Dragons", "width": 1}, {"from": "Dragons", "to": "Druffins", "width": 1}, {"from": "Dragons", "to": "Earth Dragons", "width": 1}, {"from": "Dragons", "to": "Ember Dragons", "width": 1}, {"from": "Dragons", "to": "Ionic Dragons", "width": 1}, {"from": "Dragons", "to": "Locuthi", "width": 1}, {"from": "Dragons", "to": "Luminous Dragons", "width": 1}, {"from": "Dragons", "to": "Void Dragons", "width": 1}, {"from": "Dragons", "to": "Water Dragons", "width": 1}, {"from": "Dragons", "to": "Dragon\u0027s Fire Whiskey", "width": 1}, {"from": "Dragons", "to": "Azure Dragons", "width": 1}, {"from": "Dragons", "to": "Crystal Maiden (Dragon\u0027s Blood)", "width": 1}, {"from": "Dragons", "to": "Juggernaut", "width": 1}, {"from": "Dragons", "to": "Lina (Dragon\u0027s Blood)", "width": 1}, {"from": "Dragons", "to": "Mirana (Dragon\u0027s Blood)", "width": 1}, {"from": "Dragons", "to": "Terrorblade (Dragon\u0027s Blood)", "width": 1}, {"from": "Dragon Knight", "to": "Candoness", "width": 1}, {"from": "Dragon Knight", "to": "Elemental Plane", "width": 1}, {"from": "Dragon Knight", "to": "Dowager Queen Tansis XII", "width": 1}, {"from": "Dragon Knight", "to": "Fr\u00fchling", "width": 1}, {"from": "Dragon Knight", "to": "Slyrak", "width": 1}, {"from": "Dragon Knight", "to": "Tansis XII", "width": 1}, {"from": "Dragon Knight", "to": "Tansis XIII", "width": 1}, {"from": "Dragon Knight", "to": "Uldorak", "width": 1}, {"from": "Dragon Knight", "to": "Vyxia", "width": 1}, {"from": "Dragon Knight", "to": "Dragon Clan", "width": 1}, {"from": "Dragon Knight", "to": "Eldwurms", "width": 1}, {"from": "Dragon Knight", "to": "Scaled Knights of Uthorian", "width": 1}, {"from": "Dragon Knight", "to": "Drakinds", "width": 1}, {"from": "Dragon Knight", "to": "Iron Dragons", "width": 1}, {"from": "Dragon Knight", "to": "Named Swords", "width": 1}, {"from": "Dragon Knight", "to": "Wyrmblade", "width": 1}, {"from": "Dragon Knight", "to": "Crystal Maiden", "width": 1}, {"from": "Dragon Knight", "to": "Jakiro", "width": 1}, {"from": "Dragon Knight", "to": "Lich", "width": 1}, {"from": "Dragon Knight", "to": "Puck", "width": 1}, {"from": "Dragon Knight", "to": "Winter Wyvern", "width": 1}, {"from": "Dragon Knight", "to": "Human", "width": 1}, {"from": "Dragon Knight", "to": "Anessix", "width": 1}, {"from": "Dragon Knight", "to": "Black Dragons", "width": 1}, {"from": "Dragon Knight", "to": "Lone Druid", "width": 1}, {"from": "Dragon Knight", "to": "Mirana", "width": 1}, {"from": "Wyverns", "to": "Aghanim", "width": 1}, {"from": "Wyverns", "to": "Karaul Silverwing", "width": 1}, {"from": "Wyverns", "to": "Winter Wyvern", "width": 1}, {"from": "Wyverns", "to": "Dragon Lance", "width": 1}, {"from": "Wyverns", "to": "Hurricane Pike", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"gravitationalConstant": -8000, "centralGravity": 4, "springLength": 500, "springConstant": 0.002, "damping": 0.15, "avoidOverlap": 0.2}, "maxVelocity": 70, "minVelocity": 0.75}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

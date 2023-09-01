@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1600px;
+                 height: 1600px;
+                 background-color: #171717;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 1, "id": "Nyx Assassin", "label": "Nyx Assassin", "shape": "dot", "size": 87}, {"font": {"color": "white"}, "group": 1, "id": "Hidden Hive", "label": "Hidden Hive", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 2, "id": "Ultimyr Archives", "label": "Ultimyr Archives", "shape": "dot", "size": 20}, {"font": {"color": "white"}, "group": 3, "id": "Hidden Ones", "label": "Hidden Ones", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 1, "id": "Nyx", "label": "Nyx", "shape": "dot", "size": 18}, {"font": {"color": "white"}, "group": 1, "id": "Zealot Scarabs", "label": "Zealot Scarabs", "shape": "dot", "size": 18}, {"font": {"color": "white"}, "group": 1, "id": "Kaktos", "label": "Kaktos", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Dagon", "label": "Dagon", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Sacred Orb", "label": "Sacred Orb", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 1, "id": "Mana", "label": "Mana", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Alchemy", "label": "Alchemy", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 5, "id": "Abaddon", "label": "Abaddon", "shape": "dot", "size": 15}, {"font": {"color": "white"}, "group": 1, "id": "Lion", "label": "Lion", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Impale", "label": "Impale", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Mind Flare", "label": "Mind Flare", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Spiked Carapace", "label": "Spiked Carapace", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Burrow", "label": "Burrow", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Unburrow", "label": "Unburrow", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Vendetta", "label": "Vendetta", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Broodmother", "label": "Broodmother", "shape": "dot", "size": 20}, {"font": {"color": "white"}, "group": 3, "id": "Templar Assassin", "label": "Templar Assassin", "shape": "dot", "size": 36}, {"font": {"color": "white"}, "group": 0, "id": "Void Spirit", "label": "Void Spirit", "shape": "dot", "size": 39}, {"font": {"color": "white"}, "group": 2, "id": "Ultimyr Academy", "label": "Ultimyr Academy", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Warlock", "label": "Warlock", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Ancient Apparition", "label": "Ancient Apparition", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Windranger", "label": "Windranger", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Rubick", "label": "Rubick", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Dragons", "label": "Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Ultimyr University", "label": "Ultimyr University", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Hidden Temple", "label": "Hidden Temple", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 1, "id": "Grimstroke", "label": "Grimstroke", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "Font of Avernus", "label": "Font of Avernus", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "House of Avernus", "label": "House of Avernus", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "House Avernus", "label": "House Avernus", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Magnetic Ziggurat", "label": "Magnetic Ziggurat", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Mount Pyrotheos", "label": "Mount Pyrotheos", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Sundered Moon", "label": "Sundered Moon", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Thorny Wastes", "label": "Thorny Wastes", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Ptholopthales", "label": "Ptholopthales", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Monkey King", "label": "Monkey King", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Mars", "label": "Mars", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Halgalreh", "label": "Halgalreh", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Violet Archives", "label": "Violet Archives", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Violet Plateau", "label": "Violet Plateau", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Belladonna", "label": "Belladonna", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "The Three Shades", "label": "The Three Shades", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "The Unseen Seven", "label": "The Unseen Seven", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Tyrian", "label": "Tyrian", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Wren", "label": "Wren", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Ascended Ones", "label": "Ascended Ones", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Redmoon Order", "label": "Redmoon Order", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Western Wails", "label": "Western Wails", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Juggernaut", "label": "Juggernaut", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Skeleton King", "label": "Skeleton King", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 3, "id": "Sunbreeze Family", "label": "Sunbreeze Family", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Mireska\u0027s Father", "label": "Mireska\u0027s Father", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Astral Plane", "label": "Astral Plane", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Fabric of Creation", "label": "Fabric of Creation", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Nothl Realm", "label": "Nothl Realm", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Celestials", "label": "Celestials", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Creatures of Darkness", "label": "Creatures of Darkness", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Barathrum\u0027s Master", "label": "Barathrum\u0027s Master", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Raijin", "label": "Raijin", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Korumite", "label": "Korumite", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Monks of Turstarkuri", "label": "Monks of Turstarkuri", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Shadowgate Amulet", "label": "Shadowgate Amulet", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Brewmaster", "label": "Brewmaster", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Earth Spirit", "label": "Earth Spirit", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Earthshaker", "label": "Earthshaker", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Ember Spirit", "label": "Ember Spirit", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Night Stalker", "label": "Night Stalker", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Spectre", "label": "Spectre", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Storm Spirit", "label": "Storm Spirit", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Echo Sabre", "label": "Echo Sabre", "shape": "dot", "size": 11}]);
+                  edges = new vis.DataSet([{"from": "Nyx Assassin", "to": "Hidden Hive", "width": 1}, {"from": "Nyx Assassin", "to": "Ultimyr Archives", "width": 1}, {"from": "Nyx Assassin", "to": "Hidden Ones", "width": 1}, {"from": "Nyx Assassin", "to": "Nyx", "width": 1}, {"from": "Nyx Assassin", "to": "Zealot Scarabs", "width": 1}, {"from": "Nyx Assassin", "to": "Kaktos", "width": 1}, {"from": "Nyx Assassin", "to": "Dagon", "width": 1}, {"from": "Nyx Assassin", "to": "Sacred Orb", "width": 1}, {"from": "Nyx Assassin", "to": "Mana", "width": 1}, {"from": "Nyx Assassin", "to": "Alchemy", "width": 1}, {"from": "Nyx Assassin", "to": "Abaddon", "width": 1}, {"from": "Nyx Assassin", "to": "Lion", "width": 1}, {"from": "Nyx Assassin", "to": "Impale", "width": 1}, {"from": "Nyx Assassin", "to": "Mind Flare", "width": 1}, {"from": "Nyx Assassin", "to": "Spiked Carapace", "width": 1}, {"from": "Nyx Assassin", "to": "Burrow", "width": 1}, {"from": "Nyx Assassin", "to": "Unburrow", "width": 1}, {"from": "Nyx Assassin", "to": "Vendetta", "width": 1}, {"from": "Nyx Assassin", "to": "Broodmother", "width": 1}, {"from": "Nyx Assassin", "to": "Templar Assassin", "width": 1}, {"from": "Nyx Assassin", "to": "Void Spirit", "width": 1}, {"from": "Hidden Hive", "to": "Zealot Scarabs", "width": 1}, {"from": "Hidden Hive", "to": "Nyx", "width": 1}, {"from": "Hidden Hive", "to": "Sacred Orb", "width": 1}, {"from": "Ultimyr Archives", "to": "Ultimyr Academy", "width": 1}, {"from": "Ultimyr Archives", "to": "Warlock", "width": 1}, {"from": "Ultimyr Archives", "to": "Ancient Apparition", "width": 1}, {"from": "Ultimyr Archives", "to": "Windranger", "width": 1}, {"from": "Ultimyr Archives", "to": "Rubick", "width": 1}, {"from": "Ultimyr Archives", "to": "Dragons", "width": 1}, {"from": "Ultimyr Archives", "to": "Zealot Scarabs", "width": 1}, {"from": "Ultimyr Archives", "to": "Ultimyr University", "width": 1}, {"from": "Hidden Ones", "to": "Hidden Temple", "width": 1}, {"from": "Hidden Ones", "to": "Templar Assassin", "width": 1}, {"from": "Nyx", "to": "Abaddon", "width": 1}, {"from": "Nyx", "to": "Zealot Scarabs", "width": 1}, {"from": "Nyx", "to": "Sacred Orb", "width": 1}, {"from": "Nyx", "to": "Alchemy", "width": 1}, {"from": "Nyx", "to": "Lion", "width": 1}, {"from": "Zealot Scarabs", "to": "Broodmother", "width": 1}, {"from": "Zealot Scarabs", "to": "Sacred Orb", "width": 1}, {"from": "Zealot Scarabs", "to": "Alchemy", "width": 1}, {"from": "Dagon", "to": "Grimstroke", "width": 1}, {"from": "Alchemy", "to": "Templar Assassin", "width": 1}, {"from": "Abaddon", "to": "Font of Avernus", "width": 1}, {"from": "Abaddon", "to": "House of Avernus", "width": 1}, {"from": "Abaddon", "to": "House Avernus", "width": 1}, {"from": "Broodmother", "to": "Magnetic Ziggurat", "width": 1}, {"from": "Broodmother", "to": "Mount Pyrotheos", "width": 1}, {"from": "Broodmother", "to": "Sundered Moon", "width": 1}, {"from": "Broodmother", "to": "Thorny Wastes", "width": 1}, {"from": "Broodmother", "to": "Ptholopthales", "width": 1}, {"from": "Broodmother", "to": "Monkey King", "width": 1}, {"from": "Broodmother", "to": "Mars", "width": 1}, {"from": "Templar Assassin", "to": "Halgalreh", "width": 1}, {"from": "Templar Assassin", "to": "Hidden Temple", "width": 1}, {"from": "Templar Assassin", "to": "Violet Archives", "width": 1}, {"from": "Templar Assassin", "to": "Violet Plateau", "width": 1}, {"from": "Templar Assassin", "to": "Belladonna", "width": 1}, {"from": "Templar Assassin", "to": "The Three Shades", "width": 1}, {"from": "Templar Assassin", "to": "The Unseen Seven", "width": 1}, {"from": "Templar Assassin", "to": "Tyrian", "width": 1}, {"from": "Templar Assassin", "to": "Wren", "width": 1}, {"from": "Templar Assassin", "to": "Ascended Ones", "width": 1}, {"from": "Templar Assassin", "to": "Redmoon Order", "width": 1}, {"from": "Templar Assassin", "to": "Western Wails", "width": 1}, {"from": "Templar Assassin", "to": "Juggernaut", "width": 1}, {"from": "Templar Assassin", "to": "Skeleton King", "width": 1}, {"from": "Templar Assassin", "to": "Void Spirit", "width": 1}, {"from": "Templar Assassin", "to": "Sunbreeze Family", "width": 1}, {"from": "Templar Assassin", "to": "Mireska\u0027s Father", "width": 1}, {"from": "Void Spirit", "to": "Astral Plane", "width": 1}, {"from": "Void Spirit", "to": "Fabric of Creation", "width": 1}, {"from": "Void Spirit", "to": "Hidden Temple", "width": 1}, {"from": "Void Spirit", "to": "Nothl Realm", "width": 1}, {"from": "Void Spirit", "to": "Celestials", "width": 1}, {"from": "Void Spirit", "to": "Creatures of Darkness", "width": 1}, {"from": "Void Spirit", "to": "Barathrum\u0027s Master", "width": 1}, {"from": "Void Spirit", "to": "Raijin", "width": 1}, {"from": "Void Spirit", "to": "Korumite", "width": 1}, {"from": "Void Spirit", "to": "Monks of Turstarkuri", "width": 1}, {"from": "Void Spirit", "to": "Shadowgate Amulet", "width": 1}, {"from": "Void Spirit", "to": "Brewmaster", "width": 1}, {"from": "Void Spirit", "to": "Earth Spirit", "width": 1}, {"from": "Void Spirit", "to": "Earthshaker", "width": 1}, {"from": "Void Spirit", "to": "Ember Spirit", "width": 1}, {"from": "Void Spirit", "to": "Night Stalker", "width": 1}, {"from": "Void Spirit", "to": "Skeleton King", "width": 1}, {"from": "Void Spirit", "to": "Spectre", "width": 1}, {"from": "Void Spirit", "to": "Storm Spirit", "width": 1}, {"from": "Void Spirit", "to": "Echo Sabre", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"gravitationalConstant": -8000, "centralGravity": 4, "springLength": 500, "springConstant": 0.002, "damping": 0.15, "avoidOverlap": 0.2}, "maxVelocity": 70, "minVelocity": 0.75}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

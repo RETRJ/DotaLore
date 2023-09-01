@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1600px;
+                 height: 1600px;
+                 background-color: #171717;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 0, "id": "Sagan", "label": "Sagan", "shape": "dot", "size": 76}, {"font": {"color": "white"}, "group": 0, "id": "Dragon Hold", "label": "Dragon Hold", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Invoker\u0027s Tower", "label": "Invoker\u0027s Tower", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Temple of Mene (Dragon\u0027s Blood)", "label": "Temple of Mene (Dragon\u0027s Blood)", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Worldwyrm", "label": "Worldwyrm", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Mirana", "label": "Mirana", "shape": "dot", "size": 56}, {"font": {"color": "white"}, "group": 2, "id": "Nightsilver Woods", "label": "Nightsilver Woods", "shape": "dot", "size": 49}, {"font": {"color": "white"}, "group": 0, "id": "Tihomir", "label": "Tihomir", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Air Dragons", "label": "Air Dragons", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Eye of the Worldwyrm", "label": "Eye of the Worldwyrm", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Hoodwink", "label": "Hoodwink", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Luna (Dragon\u0027s Blood)", "label": "Luna (Dragon\u0027s Blood)", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Marci", "label": "Marci", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 0, "id": "Mirana (Dragon\u0027s Blood)", "label": "Mirana (Dragon\u0027s Blood)", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Demon Star", "label": "Demon Star", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Shrine of Selemene", "label": "Shrine of Selemene", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Solar Throne", "label": "Solar Throne", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Temple of Mene", "label": "Temple of Mene", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Fymryn", "label": "Fymryn", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Selemene (Dragon\u0027s Blood)", "label": "Selemene (Dragon\u0027s Blood)", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Selemene", "label": "Selemene", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Sherzi", "label": "Sherzi", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "The Shopkeeper", "label": "The Shopkeeper", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Zal", "label": "Zal", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Dragons (Dragon\u0027s Blood)", "label": "Dragons (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Elves (Dragon\u0027s Blood)", "label": "Elves (Dragon\u0027s Blood)", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Stars", "label": "Stars", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Asar", "label": "Asar", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Shabarra", "label": "Shabarra", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Vanari", "label": "Vanari", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Griffins", "label": "Griffins", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Litigons", "label": "Litigons", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Lunar Dragons", "label": "Lunar Dragons", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Owlions", "label": "Owlions", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Sabre-Lynx", "label": "Sabre-Lynx", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Dragon\u0027s Fire Whiskey", "label": "Dragon\u0027s Fire Whiskey", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Luna", "label": "Luna", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Dragon Knight", "label": "Dragon Knight", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Lina", "label": "Lina", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Human", "label": "Human", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Griffin", "label": "Griffin", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Underlord", "label": "Underlord", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Monkey King", "label": "Monkey King", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Dark Moon Order", "label": "Dark Moon Order", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Dark Moon Horde", "label": "Dark Moon Horde", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Nova", "label": "Nova", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Lunar Moth", "label": "Lunar Moth", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Felmoth", "label": "Felmoth", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Mene", "label": "Mene", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Glossamar", "label": "Glossamar", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Moonsilver", "label": "Moonsilver", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Dark Moon", "label": "Dark Moon", "shape": "dot", "size": 11}]);
+                  edges = new vis.DataSet([{"from": "Sagan", "to": "Dragon Hold", "width": 1}, {"from": "Sagan", "to": "Invoker\u0027s Tower", "width": 1}, {"from": "Sagan", "to": "Temple of Mene (Dragon\u0027s Blood)", "width": 1}, {"from": "Sagan", "to": "Worldwyrm", "width": 1}, {"from": "Sagan", "to": "Mirana", "width": 1}, {"from": "Sagan", "to": "Nightsilver Woods", "width": 1}, {"from": "Sagan", "to": "Tihomir", "width": 1}, {"from": "Sagan", "to": "Air Dragons", "width": 1}, {"from": "Sagan", "to": "Eye of the Worldwyrm", "width": 1}, {"from": "Sagan", "to": "Hoodwink", "width": 1}, {"from": "Sagan", "to": "Luna (Dragon\u0027s Blood)", "width": 1}, {"from": "Sagan", "to": "Marci", "width": 1}, {"from": "Sagan", "to": "Mirana (Dragon\u0027s Blood)", "width": 1}, {"from": "Temple of Mene (Dragon\u0027s Blood)", "to": "Nightsilver Woods", "width": 1}, {"from": "Worldwyrm", "to": "Mirana", "width": 1}, {"from": "Mirana", "to": "Demon Star", "width": 1}, {"from": "Mirana", "to": "Nightsilver Woods", "width": 1}, {"from": "Mirana", "to": "Shrine of Selemene", "width": 1}, {"from": "Mirana", "to": "Solar Throne", "width": 1}, {"from": "Mirana", "to": "Temple of Mene", "width": 1}, {"from": "Mirana", "to": "Fymryn", "width": 1}, {"from": "Mirana", "to": "Selemene (Dragon\u0027s Blood)", "width": 1}, {"from": "Mirana", "to": "Selemene", "width": 1}, {"from": "Mirana", "to": "Sherzi", "width": 1}, {"from": "Mirana", "to": "The Shopkeeper", "width": 1}, {"from": "Mirana", "to": "Zal", "width": 1}, {"from": "Mirana", "to": "Dragons (Dragon\u0027s Blood)", "width": 1}, {"from": "Mirana", "to": "Elves (Dragon\u0027s Blood)", "width": 1}, {"from": "Mirana", "to": "Stars", "width": 1}, {"from": "Mirana", "to": "Asar", "width": 1}, {"from": "Mirana", "to": "Shabarra", "width": 1}, {"from": "Mirana", "to": "Tihomir", "width": 1}, {"from": "Mirana", "to": "Vanari", "width": 1}, {"from": "Mirana", "to": "Air Dragons", "width": 1}, {"from": "Mirana", "to": "Griffins", "width": 1}, {"from": "Mirana", "to": "Litigons", "width": 1}, {"from": "Mirana", "to": "Lunar Dragons", "width": 1}, {"from": "Mirana", "to": "Owlions", "width": 1}, {"from": "Mirana", "to": "Sabre-Lynx", "width": 1}, {"from": "Mirana", "to": "Eye of the Worldwyrm", "width": 1}, {"from": "Mirana", "to": "Dragon\u0027s Fire Whiskey", "width": 1}, {"from": "Mirana", "to": "Luna", "width": 1}, {"from": "Mirana", "to": "Marci", "width": 1}, {"from": "Mirana", "to": "Dragon Knight", "width": 1}, {"from": "Mirana", "to": "Lina", "width": 1}, {"from": "Mirana", "to": "Human", "width": 1}, {"from": "Mirana", "to": "Griffin", "width": 1}, {"from": "Nightsilver Woods", "to": "Luna", "width": 1}, {"from": "Nightsilver Woods", "to": "Underlord", "width": 1}, {"from": "Nightsilver Woods", "to": "Monkey King", "width": 1}, {"from": "Nightsilver Woods", "to": "Dark Moon Order", "width": 1}, {"from": "Nightsilver Woods", "to": "Dark Moon Horde", "width": 1}, {"from": "Nightsilver Woods", "to": "Shrine of Selemene", "width": 1}, {"from": "Nightsilver Woods", "to": "Temple of Mene", "width": 1}, {"from": "Nightsilver Woods", "to": "Selemene", "width": 1}, {"from": "Nightsilver Woods", "to": "Nova", "width": 1}, {"from": "Nightsilver Woods", "to": "Lunar Moth", "width": 1}, {"from": "Nightsilver Woods", "to": "Griffin", "width": 1}, {"from": "Nightsilver Woods", "to": "Owlions", "width": 1}, {"from": "Nightsilver Woods", "to": "Litigons", "width": 1}, {"from": "Nightsilver Woods", "to": "Felmoth", "width": 1}, {"from": "Nightsilver Woods", "to": "Fymryn", "width": 1}, {"from": "Nightsilver Woods", "to": "Mene", "width": 1}, {"from": "Nightsilver Woods", "to": "Selemene (Dragon\u0027s Blood)", "width": 1}, {"from": "Nightsilver Woods", "to": "Elves (Dragon\u0027s Blood)", "width": 1}, {"from": "Nightsilver Woods", "to": "Stars", "width": 1}, {"from": "Nightsilver Woods", "to": "Griffins", "width": 1}, {"from": "Nightsilver Woods", "to": "Glossamar", "width": 1}, {"from": "Nightsilver Woods", "to": "Moonsilver", "width": 1}, {"from": "Nightsilver Woods", "to": "Dark Moon", "width": 1}, {"from": "Nightsilver Woods", "to": "Luna (Dragon\u0027s Blood)", "width": 1}, {"from": "Nightsilver Woods", "to": "Marci", "width": 1}, {"from": "Nightsilver Woods", "to": "Mirana (Dragon\u0027s Blood)", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"gravitationalConstant": -8000, "centralGravity": 4, "springLength": 500, "springConstant": 0.002, "damping": 0.15, "avoidOverlap": 0.2}, "maxVelocity": 70, "minVelocity": 0.75}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

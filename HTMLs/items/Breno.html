@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1600px;
+                 height: 1600px;
+                 background-color: #171717;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 1, "id": "Creeps", "label": "Creeps", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 1, "id": "Breno", "label": "Breno", "shape": "dot", "size": 62}, {"font": {"color": "white"}, "group": 1, "id": "Quirt", "label": "Quirt", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Sithil", "label": "Sithil", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Radiant", "label": "Radiant", "shape": "dot", "size": 29}, {"font": {"color": "white"}, "group": 0, "id": "Mad Moon", "label": "Mad Moon", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Primordial Consciousness", "label": "Primordial Consciousness", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Prowlers", "label": "Prowlers", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Kashurra", "label": "Kashurra", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Dire", "label": "Dire", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Arc Warden", "label": "Arc Warden", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Prellex", "label": "Prellex", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Aegis of Champions", "label": "Aegis of Champions", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Mana", "label": "Mana", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Radiant Ore", "label": "Radiant Ore", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Chaos", "label": "Chaos", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Nemesis Stones", "label": "Nemesis Stones", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Arc Warden (Dragon\u0027s Blood)", "label": "Arc Warden (Dragon\u0027s Blood)", "shape": "dot", "size": 11}]);
+                  edges = new vis.DataSet([{"from": "Creeps", "to": "Breno", "width": 1}, {"from": "Creeps", "to": "Quirt", "width": 1}, {"from": "Creeps", "to": "Sithil", "width": 1}, {"from": "Breno", "to": "Radiant", "width": 1}, {"from": "Radiant", "to": "Mad Moon", "width": 1}, {"from": "Radiant", "to": "Primordial Consciousness", "width": 1}, {"from": "Radiant", "to": "Prowlers", "width": 1}, {"from": "Radiant", "to": "Kashurra", "width": 1}, {"from": "Radiant", "to": "Sithil", "width": 1}, {"from": "Radiant", "to": "Dire", "width": 1}, {"from": "Radiant", "to": "Arc Warden", "width": 1}, {"from": "Radiant", "to": "Prellex", "width": 1}, {"from": "Radiant", "to": "Aegis of Champions", "width": 1}, {"from": "Radiant", "to": "Mana", "width": 1}, {"from": "Radiant", "to": "Radiant Ore", "width": 1}, {"from": "Radiant", "to": "Chaos", "width": 1}, {"from": "Radiant", "to": "Nemesis Stones", "width": 1}, {"from": "Radiant", "to": "Arc Warden (Dragon\u0027s Blood)", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"gravitationalConstant": -8000, "centralGravity": 4, "springLength": 500, "springConstant": 0.002, "damping": 0.15, "avoidOverlap": 0.2}, "maxVelocity": 70, "minVelocity": 0.75}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1600px;
+                 height: 1600px;
+                 background-color: #171717;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 0, "id": "Lycans", "label": "Lycans", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Howling Weald", "label": "Howling Weald", "shape": "dot", "size": 79}, {"font": {"color": "white"}, "group": 0, "id": "Lucius Longclaw", "label": "Lucius Longclaw", "shape": "dot", "size": 17}, {"font": {"color": "white"}, "group": 1, "id": "Ogres", "label": "Ogres", "shape": "dot", "size": 33}, {"font": {"color": "white"}, "group": 2, "id": "Hellbears", "label": "Hellbears", "shape": "dot", "size": 19}, {"font": {"color": "white"}, "group": 0, "id": "Bonemeal Ogres", "label": "Bonemeal Ogres", "shape": "dot", "size": 18}, {"font": {"color": "white"}, "group": 0, "id": "Longclaw Clan", "label": "Longclaw Clan", "shape": "dot", "size": 15}, {"font": {"color": "white"}, "group": 4, "id": "Kalabor Desert", "label": "Kalabor Desert", "shape": "dot", "size": 17}, {"font": {"color": "white"}, "group": 0, "id": "Bonemeal Ridge", "label": "Bonemeal Ridge", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 0, "id": "Silkmire Pass", "label": "Silkmire Pass", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 4, "id": "Temple of Ermacor", "label": "Temple of Ermacor", "shape": "dot", "size": 17}, {"font": {"color": "white"}, "group": 0, "id": "Bogdugg", "label": "Bogdugg", "shape": "dot", "size": 22}, {"font": {"color": "white"}, "group": 3, "id": "Gallaron", "label": "Gallaron", "shape": "dot", "size": 20}, {"font": {"color": "white"}, "group": 0, "id": "Dire Wolves", "label": "Dire Wolves", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Longclaw\u0027s Amulet", "label": "Longclaw\u0027s Amulet", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Dire Wolf", "label": "Dire Wolf", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 1, "id": "Feral Road", "label": "Feral Road", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Hauptstadt", "label": "Hauptstadt", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Helio Imperium", "label": "Helio Imperium", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Alchemist", "label": "Alchemist", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Ogre Magi", "label": "Ogre Magi", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Trolls", "label": "Trolls", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Bronze Legion", "label": "Bronze Legion", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Icewrack", "label": "Icewrack", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Stonehall", "label": "Stonehall", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Goddess of Luck", "label": "Goddess of Luck", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Lommett", "label": "Lommett", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Tox Armripper", "label": "Tox Armripper", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Keefe Treekiller", "label": "Keefe Treekiller", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Marrowfell Hunters", "label": "Marrowfell Hunters", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 2, "id": "Roseleaf", "label": "Roseleaf", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Revtel", "label": "Revtel", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "White Spire", "label": "White Spire", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Kwerthias", "label": "Kwerthias", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Grek", "label": "Grek", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Iron Talon", "label": "Iron Talon", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Conclave of the Brine", "label": "Conclave of the Brine", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Siltbreaker", "label": "Siltbreaker", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Thunderhides", "label": "Thunderhides", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Ermacor the Pathfinder", "label": "Ermacor the Pathfinder", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Gargoyles", "label": "Gargoyles", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Ermacor", "label": "Ermacor", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Bogdugg\u0027s Cudgel", "label": "Bogdugg\u0027s Cudgel", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Bogdugg\u0027s Baldric", "label": "Bogdugg\u0027s Baldric", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Bogdugg\u0027s Lucky Femur", "label": "Bogdugg\u0027s Lucky Femur", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Invoker", "label": "Invoker", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Quas Wex Exports", "label": "Quas Wex Exports", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Crossroads Garrison", "label": "Crossroads Garrison", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Gallaron\u0027s Labyrinth", "label": "Gallaron\u0027s Labyrinth", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Invoke", "label": "Invoke", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Wex", "label": "Wex", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Exort", "label": "Exort", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Dark Moon", "label": "Dark Moon", "shape": "dot", "size": 11}]);
+                  edges = new vis.DataSet([{"from": "Lycans", "to": "Howling Weald", "width": 1}, {"from": "Lycans", "to": "Lucius Longclaw", "width": 1}, {"from": "Howling Weald", "to": "Ogres", "width": 1}, {"from": "Howling Weald", "to": "Hellbears", "width": 1}, {"from": "Howling Weald", "to": "Bonemeal Ogres", "width": 1}, {"from": "Howling Weald", "to": "Longclaw Clan", "width": 1}, {"from": "Howling Weald", "to": "Kalabor Desert", "width": 1}, {"from": "Howling Weald", "to": "Bonemeal Ridge", "width": 1}, {"from": "Howling Weald", "to": "Silkmire Pass", "width": 1}, {"from": "Howling Weald", "to": "Temple of Ermacor", "width": 1}, {"from": "Howling Weald", "to": "Lucius Longclaw", "width": 1}, {"from": "Howling Weald", "to": "Bogdugg", "width": 1}, {"from": "Howling Weald", "to": "Gallaron", "width": 1}, {"from": "Howling Weald", "to": "Dire Wolves", "width": 1}, {"from": "Howling Weald", "to": "Longclaw\u0027s Amulet", "width": 1}, {"from": "Howling Weald", "to": "Dire Wolf", "width": 1}, {"from": "Ogres", "to": "Bonemeal Ridge", "width": 1}, {"from": "Ogres", "to": "Feral Road", "width": 1}, {"from": "Ogres", "to": "Hauptstadt", "width": 1}, {"from": "Ogres", "to": "Helio Imperium", "width": 1}, {"from": "Ogres", "to": "Alchemist", "width": 1}, {"from": "Ogres", "to": "Ogre Magi", "width": 1}, {"from": "Ogres", "to": "Trolls", "width": 1}, {"from": "Ogres", "to": "Bonemeal Ogres", "width": 1}, {"from": "Ogres", "to": "Bronze Legion", "width": 1}, {"from": "Ogres", "to": "Icewrack", "width": 1}, {"from": "Ogres", "to": "Stonehall", "width": 1}, {"from": "Ogres", "to": "Goddess of Luck", "width": 1}, {"from": "Ogres", "to": "Bogdugg", "width": 1}, {"from": "Ogres", "to": "Lommett", "width": 1}, {"from": "Ogres", "to": "Tox Armripper", "width": 1}, {"from": "Ogres", "to": "Keefe Treekiller", "width": 1}, {"from": "Ogres", "to": "Marrowfell Hunters", "width": 1}, {"from": "Hellbears", "to": "Marrowfell Hunters", "width": 1}, {"from": "Hellbears", "to": "Roseleaf", "width": 1}, {"from": "Hellbears", "to": "Revtel", "width": 1}, {"from": "Hellbears", "to": "White Spire", "width": 1}, {"from": "Hellbears", "to": "Kwerthias", "width": 1}, {"from": "Hellbears", "to": "Grek", "width": 1}, {"from": "Hellbears", "to": "Iron Talon", "width": 1}, {"from": "Bonemeal Ogres", "to": "Bonemeal Ridge", "width": 1}, {"from": "Bonemeal Ogres", "to": "Bogdugg", "width": 1}, {"from": "Bonemeal Ogres", "to": "Lucius Longclaw", "width": 1}, {"from": "Bonemeal Ogres", "to": "Longclaw Clan", "width": 1}, {"from": "Bonemeal Ogres", "to": "Silkmire Pass", "width": 1}, {"from": "Longclaw Clan", "to": "Bogdugg", "width": 1}, {"from": "Longclaw Clan", "to": "Lucius Longclaw", "width": 1}, {"from": "Longclaw Clan", "to": "Dire Wolf", "width": 1}, {"from": "Kalabor Desert", "to": "Conclave of the Brine", "width": 1}, {"from": "Kalabor Desert", "to": "Siltbreaker", "width": 1}, {"from": "Kalabor Desert", "to": "Temple of Ermacor", "width": 1}, {"from": "Kalabor Desert", "to": "Marrowfell Hunters", "width": 1}, {"from": "Kalabor Desert", "to": "Thunderhides", "width": 1}, {"from": "Bonemeal Ridge", "to": "Bogdugg", "width": 1}, {"from": "Silkmire Pass", "to": "Temple of Ermacor", "width": 1}, {"from": "Silkmire Pass", "to": "Bogdugg", "width": 1}, {"from": "Temple of Ermacor", "to": "Ermacor the Pathfinder", "width": 1}, {"from": "Temple of Ermacor", "to": "Gargoyles", "width": 1}, {"from": "Temple of Ermacor", "to": "Ermacor", "width": 1}, {"from": "Lucius Longclaw", "to": "Bogdugg", "width": 1}, {"from": "Lucius Longclaw", "to": "Dire Wolf", "width": 1}, {"from": "Bogdugg", "to": "Bogdugg\u0027s Cudgel", "width": 1}, {"from": "Bogdugg", "to": "Bogdugg\u0027s Baldric", "width": 1}, {"from": "Bogdugg", "to": "Bogdugg\u0027s Lucky Femur", "width": 1}, {"from": "Gallaron", "to": "Invoker", "width": 1}, {"from": "Gallaron", "to": "Quas Wex Exports", "width": 1}, {"from": "Gallaron", "to": "Crossroads Garrison", "width": 1}, {"from": "Gallaron", "to": "Gallaron\u0027s Labyrinth", "width": 1}, {"from": "Gallaron", "to": "Invoke", "width": 1}, {"from": "Gallaron", "to": "Wex", "width": 1}, {"from": "Gallaron", "to": "Exort", "width": 1}, {"from": "Gallaron", "to": "Dark Moon", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"gravitationalConstant": -8000, "centralGravity": 4, "springLength": 500, "springConstant": 0.002, "damping": 0.15, "avoidOverlap": 0.2}, "maxVelocity": 70, "minVelocity": 0.75}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

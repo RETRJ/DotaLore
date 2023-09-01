@@ -1,0 +1,222 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1600px;
+                 height: 1600px;
+                 background-color: #171717;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 1600px;
+                 height: 1600px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 1, "id": "Drow Ranger", "label": "Drow Ranger", "shape": "dot", "size": 84}, {"font": {"color": "white"}, "group": 1, "id": "Drow", "label": "Drow", "shape": "dot", "size": 18}, {"font": {"color": "white"}, "group": 1, "id": "Boreal Watch", "label": "Boreal Watch", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 1, "id": "Kha-Ren", "label": "Kha-Ren", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Sylvan Guard", "label": "Sylvan Guard", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Arctic Arcoch", "label": "Arctic Arcoch", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 1, "id": "Bloodroot Tree", "label": "Bloodroot Tree", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 1, "id": "Shadowcats", "label": "Shadowcats", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Jewels of the Forest", "label": "Jewels of the Forest", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Pincher Iron", "label": "Pincher Iron", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Frost Arrows", "label": "Frost Arrows", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Gust", "label": "Gust", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Multishot", "label": "Multishot", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Glacier", "label": "Glacier", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Marksmanship", "label": "Marksmanship", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Pudge", "label": "Pudge", "shape": "dot", "size": 36}, {"font": {"color": "white"}, "group": 4, "id": "Slark", "label": "Slark", "shape": "dot", "size": 33}, {"font": {"color": "white"}, "group": 0, "id": "Windranger", "label": "Windranger", "shape": "dot", "size": 30}, {"font": {"color": "white"}, "group": 2, "id": "Human", "label": "Human", "shape": "dot", "size": 71}, {"font": {"color": "white"}, "group": 0, "id": "Nature\u0027s Prophet", "label": "Nature\u0027s Prophet", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Phantom Assassin", "label": "Phantom Assassin", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Bloodroot Guard", "label": "Bloodroot Guard", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Cathedral of Rumusque", "label": "Cathedral of Rumusque", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Fields of Endless Carnage", "label": "Fields of Endless Carnage", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Krimwohl", "label": "Krimwohl", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Quoidge", "label": "Quoidge", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Flayed Twins", "label": "Flayed Twins", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "The Dead God", "label": "The Dead God", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Brandalon", "label": "Brandalon", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Carl", "label": "Carl", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Crella", "label": "Crella", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Lady Anshu", "label": "Lady Anshu", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Nivan Gallants", "label": "Nivan Gallants", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Ditch Hog", "label": "Ditch Hog", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Chains of Abscession", "label": "Chains of Abscession", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Necrophos", "label": "Necrophos", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Dead God", "label": "Dead God", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Lady Onshu", "label": "Lady Onshu", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Rubick", "label": "Rubick", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Crey", "label": "Crey", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Dark Reef", "label": "Dark Reef", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Shadeshore", "label": "Shadeshore", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Tidemarsh", "label": "Tidemarsh", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Dark Ones", "label": "Dark Ones", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Meranths", "label": "Meranths", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Slithereen", "label": "Slithereen", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Lorlin Lasan", "label": "Lorlin Lasan", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Dark Reef Dozen", "label": "Dark Reef Dozen", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Daggerfish", "label": "Daggerfish", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Glow Conch", "label": "Glow Conch", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Umizar", "label": "Umizar", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Skeleton King", "label": "Skeleton King", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Naga Siren", "label": "Naga Siren", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Deep Ones", "label": "Deep Ones", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Skadi", "label": "Skadi", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Njord\u0027s Hearth", "label": "Njord\u0027s Hearth", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Ultimyr Archives", "label": "Ultimyr Archives", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Western Forests", "label": "Western Forests", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Zaru\u0027Kina", "label": "Zaru\u0027Kina", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Angvols", "label": "Angvols", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Elementals", "label": "Elementals", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Harpy", "label": "Harpy", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Balimar Oakrot", "label": "Balimar Oakrot", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Bloodwood", "label": "Bloodwood", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Gilded Falcon", "label": "Gilded Falcon", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Oyoloe", "label": "Oyoloe", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Sun Vine", "label": "Sun Vine", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Hoodwink", "label": "Hoodwink", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Harpies", "label": "Harpies", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Barrowhaven", "label": "Barrowhaven", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Hauptstadt", "label": "Hauptstadt", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Helio Imperium", "label": "Helio Imperium", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Leathsham", "label": "Leathsham", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Temple of Mene (Dragon\u0027s Blood)", "label": "Temple of Mene (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Sherzi", "label": "Sherzi", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "The Shopkeeper", "label": "The Shopkeeper", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Zal", "label": "Zal", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Abajen", "label": "Abajen", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Bram", "label": "Bram", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Decius", "label": "Decius", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Father", "label": "Father", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Fr\u00fchling", "label": "Fr\u00fchling", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Hetheel", "label": "Hetheel", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Kaden\u0027s Captain", "label": "Kaden\u0027s Captain", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Kaden", "label": "Kaden", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Marcus", "label": "Marcus", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Mirana\u0027s Grandfather", "label": "Mirana\u0027s Grandfather", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Myrian", "label": "Myrian", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Nikdo", "label": "Nikdo", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Quirt", "label": "Quirt", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Ritterfau", "label": "Ritterfau", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Shabarra", "label": "Shabarra", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Sithil", "label": "Sithil", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Somjin", "label": "Somjin", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Sven\u0027s Father", "label": "Sven\u0027s Father", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Tihomir", "label": "Tihomir", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Tyber", "label": "Tyber", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Bronze Legion", "label": "Bronze Legion", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Dragon Clan (Dragon\u0027s Blood)", "label": "Dragon Clan (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Dragon Knights", "label": "Dragon Knights", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Marci\u0027s Family", "label": "Marci\u0027s Family", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Crystal Maiden (Dragon\u0027s Blood)", "label": "Crystal Maiden (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Dragon Knight", "label": "Dragon Knight", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Kunkka", "label": "Kunkka", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Legion Commander", "label": "Legion Commander", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Lina (Dragon\u0027s Blood)", "label": "Lina (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Luna (Dragon\u0027s Blood)", "label": "Luna (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Marci", "label": "Marci", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Mirana (Dragon\u0027s Blood)", "label": "Mirana (Dragon\u0027s Blood)", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Mirana", "label": "Mirana", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Sven", "label": "Sven", "shape": "dot", "size": 11}]);
+                  edges = new vis.DataSet([{"from": "Drow Ranger", "to": "Drow", "width": 1}, {"from": "Drow Ranger", "to": "Boreal Watch", "width": 1}, {"from": "Drow Ranger", "to": "Kha-Ren", "width": 1}, {"from": "Drow Ranger", "to": "Sylvan Guard", "width": 1}, {"from": "Drow Ranger", "to": "Arctic Arcoch", "width": 1}, {"from": "Drow Ranger", "to": "Bloodroot Tree", "width": 1}, {"from": "Drow Ranger", "to": "Shadowcats", "width": 1}, {"from": "Drow Ranger", "to": "Jewels of the Forest", "width": 1}, {"from": "Drow Ranger", "to": "Pincher Iron", "width": 1}, {"from": "Drow Ranger", "to": "Frost Arrows", "width": 1}, {"from": "Drow Ranger", "to": "Gust", "width": 1}, {"from": "Drow Ranger", "to": "Multishot", "width": 1}, {"from": "Drow Ranger", "to": "Glacier", "width": 1}, {"from": "Drow Ranger", "to": "Marksmanship", "width": 1}, {"from": "Drow Ranger", "to": "Pudge", "width": 1}, {"from": "Drow Ranger", "to": "Slark", "width": 1}, {"from": "Drow Ranger", "to": "Windranger", "width": 1}, {"from": "Drow Ranger", "to": "Human", "width": 1}, {"from": "Drow Ranger", "to": "Nature\u0027s Prophet", "width": 1}, {"from": "Drow", "to": "Bloodroot Tree", "width": 1}, {"from": "Drow", "to": "Jewels of the Forest", "width": 1}, {"from": "Drow", "to": "Boreal Watch", "width": 1}, {"from": "Drow", "to": "Sylvan Guard", "width": 1}, {"from": "Drow", "to": "Arctic Arcoch", "width": 1}, {"from": "Drow", "to": "Pincher Iron", "width": 1}, {"from": "Boreal Watch", "to": "Arctic Arcoch", "width": 1}, {"from": "Bloodroot Tree", "to": "Phantom Assassin", "width": 1}, {"from": "Bloodroot Tree", "to": "Bloodroot Guard", "width": 1}, {"from": "Pudge", "to": "Cathedral of Rumusque", "width": 1}, {"from": "Pudge", "to": "Fields of Endless Carnage", "width": 1}, {"from": "Pudge", "to": "Krimwohl", "width": 1}, {"from": "Pudge", "to": "Quoidge", "width": 1}, {"from": "Pudge", "to": "Flayed Twins", "width": 1}, {"from": "Pudge", "to": "The Dead God", "width": 1}, {"from": "Pudge", "to": "Brandalon", "width": 1}, {"from": "Pudge", "to": "Carl", "width": 1}, {"from": "Pudge", "to": "Crella", "width": 1}, {"from": "Pudge", "to": "Lady Anshu", "width": 1}, {"from": "Pudge", "to": "Nivan Gallants", "width": 1}, {"from": "Pudge", "to": "Ditch Hog", "width": 1}, {"from": "Pudge", "to": "Chains of Abscession", "width": 1}, {"from": "Pudge", "to": "Necrophos", "width": 1}, {"from": "Pudge", "to": "Slark", "width": 1}, {"from": "Pudge", "to": "Human", "width": 1}, {"from": "Pudge", "to": "Dead God", "width": 1}, {"from": "Pudge", "to": "Lady Onshu", "width": 1}, {"from": "Pudge", "to": "Rubick", "width": 1}, {"from": "Slark", "to": "Crey", "width": 1}, {"from": "Slark", "to": "Dark Reef", "width": 1}, {"from": "Slark", "to": "Shadeshore", "width": 1}, {"from": "Slark", "to": "Tidemarsh", "width": 1}, {"from": "Slark", "to": "Dark Ones", "width": 1}, {"from": "Slark", "to": "Meranths", "width": 1}, {"from": "Slark", "to": "Slithereen", "width": 1}, {"from": "Slark", "to": "Lorlin Lasan", "width": 1}, {"from": "Slark", "to": "Dark Reef Dozen", "width": 1}, {"from": "Slark", "to": "Daggerfish", "width": 1}, {"from": "Slark", "to": "Glow Conch", "width": 1}, {"from": "Slark", "to": "Umizar", "width": 1}, {"from": "Slark", "to": "Skeleton King", "width": 1}, {"from": "Slark", "to": "Naga Siren", "width": 1}, {"from": "Slark", "to": "Deep Ones", "width": 1}, {"from": "Slark", "to": "Skadi", "width": 1}, {"from": "Windranger", "to": "Njord\u0027s Hearth", "width": 1}, {"from": "Windranger", "to": "Ultimyr Archives", "width": 1}, {"from": "Windranger", "to": "Western Forests", "width": 1}, {"from": "Windranger", "to": "Zaru\u0027Kina", "width": 1}, {"from": "Windranger", "to": "Angvols", "width": 1}, {"from": "Windranger", "to": "Elementals", "width": 1}, {"from": "Windranger", "to": "Harpy", "width": 1}, {"from": "Windranger", "to": "Balimar Oakrot", "width": 1}, {"from": "Windranger", "to": "Bloodwood", "width": 1}, {"from": "Windranger", "to": "Gilded Falcon", "width": 1}, {"from": "Windranger", "to": "Oyoloe", "width": 1}, {"from": "Windranger", "to": "Sun Vine", "width": 1}, {"from": "Windranger", "to": "Hoodwink", "width": 1}, {"from": "Windranger", "to": "Nature\u0027s Prophet", "width": 1}, {"from": "Windranger", "to": "Harpies", "width": 1}, {"from": "Human", "to": "Barrowhaven", "width": 1}, {"from": "Human", "to": "Hauptstadt", "width": 1}, {"from": "Human", "to": "Helio Imperium", "width": 1}, {"from": "Human", "to": "Leathsham", "width": 1}, {"from": "Human", "to": "Temple of Mene (Dragon\u0027s Blood)", "width": 1}, {"from": "Human", "to": "Sherzi", "width": 1}, {"from": "Human", "to": "The Shopkeeper", "width": 1}, {"from": "Human", "to": "Zal", "width": 1}, {"from": "Human", "to": "Abajen", "width": 1}, {"from": "Human", "to": "Bram", "width": 1}, {"from": "Human", "to": "Decius", "width": 1}, {"from": "Human", "to": "Father", "width": 1}, {"from": "Human", "to": "Fr\u00fchling", "width": 1}, {"from": "Human", "to": "Hetheel", "width": 1}, {"from": "Human", "to": "Kaden\u0027s Captain", "width": 1}, {"from": "Human", "to": "Kaden", "width": 1}, {"from": "Human", "to": "Marcus", "width": 1}, {"from": "Human", "to": "Mirana\u0027s Grandfather", "width": 1}, {"from": "Human", "to": "Myrian", "width": 1}, {"from": "Human", "to": "Nikdo", "width": 1}, {"from": "Human", "to": "Quirt", "width": 1}, {"from": "Human", "to": "Ritterfau", "width": 1}, {"from": "Human", "to": "Shabarra", "width": 1}, {"from": "Human", "to": "Sithil", "width": 1}, {"from": "Human", "to": "Somjin", "width": 1}, {"from": "Human", "to": "Sven\u0027s Father", "width": 1}, {"from": "Human", "to": "Tihomir", "width": 1}, {"from": "Human", "to": "Tyber", "width": 1}, {"from": "Human", "to": "Bronze Legion", "width": 1}, {"from": "Human", "to": "Dragon Clan (Dragon\u0027s Blood)", "width": 1}, {"from": "Human", "to": "Dragon Knights", "width": 1}, {"from": "Human", "to": "Marci\u0027s Family", "width": 1}, {"from": "Human", "to": "Crystal Maiden (Dragon\u0027s Blood)", "width": 1}, {"from": "Human", "to": "Dragon Knight", "width": 1}, {"from": "Human", "to": "Kunkka", "width": 1}, {"from": "Human", "to": "Legion Commander", "width": 1}, {"from": "Human", "to": "Lina (Dragon\u0027s Blood)", "width": 1}, {"from": "Human", "to": "Luna (Dragon\u0027s Blood)", "width": 1}, {"from": "Human", "to": "Marci", "width": 1}, {"from": "Human", "to": "Mirana (Dragon\u0027s Blood)", "width": 1}, {"from": "Human", "to": "Mirana", "width": 1}, {"from": "Human", "to": "Sven", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"gravitationalConstant": -8000, "centralGravity": 4, "springLength": 500, "springConstant": 0.002, "damping": 0.15, "avoidOverlap": 0.2}, "maxVelocity": 70, "minVelocity": 0.75}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

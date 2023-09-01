@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1600px;
+                 height: 1600px;
+                 background-color: #171717;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 3, "id": "Enigma", "label": "Enigma", "shape": "dot", "size": 84}, {"font": {"color": "white"}, "group": 3, "id": "Elemental Plane", "label": "Elemental Plane", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 3, "id": "Fabric of Creation", "label": "Fabric of Creation", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Fundamental Plane", "label": "Fundamental Plane", "shape": "dot", "size": 17}, {"font": {"color": "white"}, "group": 2, "id": "Heart of Nature", "label": "Heart of Nature", "shape": "dot", "size": 20}, {"font": {"color": "white"}, "group": 0, "id": "Fundamentals", "label": "Fundamentals", "shape": "dot", "size": 23}, {"font": {"color": "white"}, "group": 4, "id": "Elementals", "label": "Elementals", "shape": "dot", "size": 44}, {"font": {"color": "white"}, "group": 1, "id": "Stars", "label": "Stars", "shape": "dot", "size": 39}, {"font": {"color": "white"}, "group": 6, "id": "Alchemy", "label": "Alchemy", "shape": "dot", "size": 30}, {"font": {"color": "white"}, "group": 0, "id": "Order", "label": "Order", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 3, "id": "Ancient Apparition", "label": "Ancient Apparition", "shape": "dot", "size": 15}, {"font": {"color": "white"}, "group": 0, "id": "Chaos Knight", "label": "Chaos Knight", "shape": "dot", "size": 23}, {"font": {"color": "white"}, "group": 5, "id": "Elder Titan", "label": "Elder Titan", "shape": "dot", "size": 29}, {"font": {"color": "white"}, "group": 3, "id": "Malefice", "label": "Malefice", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Demonic Summoning", "label": "Demonic Summoning", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Midnight Pulse", "label": "Midnight Pulse", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Black Hole", "label": "Black Hole", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Keeper of the Light", "label": "Keeper of the Light", "shape": "dot", "size": 37}, {"font": {"color": "white"}, "group": 0, "id": "Io", "label": "Io", "shape": "dot", "size": 23}, {"font": {"color": "white"}, "group": 3, "id": "Cedric", "label": "Cedric", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "The Seven Planes", "label": "The Seven Planes", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Leshrac", "label": "Leshrac", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Nature", "label": "Nature", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Ash the Defiler", "label": "Ash the Defiler", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Chronoptic Crystals", "label": "Chronoptic Crystals", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Chronoptic Energy", "label": "Chronoptic Energy", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Chaos", "label": "Chaos", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 2, "id": "The Impurities", "label": "The Impurities", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Bane", "label": "Bane", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Earthshaker", "label": "Earthshaker", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 4, "id": "Invoker", "label": "Invoker", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Morphling", "label": "Morphling", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Phoenix", "label": "Phoenix", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 4, "id": "Razor", "label": "Razor", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Spirit Breaker", "label": "Spirit Breaker", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Tiny", "label": "Tiny", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 4, "id": "Visage", "label": "Visage", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Windranger", "label": "Windranger", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Stone Giants", "label": "Stone Giants", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Terrene Plane", "label": "Terrene Plane", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "Astral Plane", "label": "Astral Plane", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 4, "id": "Nishai", "label": "Nishai", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Elemental Realm", "label": "Elemental Realm", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Barathrum\u0027s Master", "label": "Barathrum\u0027s Master", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Culween", "label": "Culween", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Golems", "label": "Golems", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 4, "id": "Gargoyles", "label": "Gargoyles", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Demon Star", "label": "Demon Star", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Selemene", "label": "Selemene", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Solar Goddess", "label": "Solar Goddess", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Meranths", "label": "Meranths", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Dawnbreaker", "label": "Dawnbreaker", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 1, "id": "Mirana", "label": "Mirana", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Oracle", "label": "Oracle", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Aesthetes of Keyturn", "label": "Aesthetes of Keyturn", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Dark Moon Order", "label": "Dark Moon Order", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Weeping Rose", "label": "Weeping Rose", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Nightsilver Woods", "label": "Nightsilver Woods", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Shrine of Selemene", "label": "Shrine of Selemene", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Children of Light", "label": "Children of Light", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Solar Crest", "label": "Solar Crest", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Meteor Hammer", "label": "Meteor Hammer", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Book of Heavens", "label": "Book of Heavens", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Spark", "label": "Spark", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 6, "id": "Shadeglass", "label": "Shadeglass", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Alchemist", "label": "Alchemist", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Templar Assassin", "label": "Templar Assassin", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Nyx Assassin", "label": "Nyx Assassin", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Witch Doctor", "label": "Witch Doctor", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Keen", "label": "Keen", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Zealot Scarabs", "label": "Zealot Scarabs", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Darkbrew Family", "label": "Darkbrew Family", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Nyx", "label": "Nyx", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Midas", "label": "Midas", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Hand of Midas", "label": "Hand of Midas", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Philosopher\u0027s Stone", "label": "Philosopher\u0027s Stone", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Chymistry", "label": "Chymistry", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 6, "id": "Radiant Ore", "label": "Radiant Ore", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Ultimyr Archives", "label": "Ultimyr Archives", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 3, "id": "Crystal Maiden", "label": "Crystal Maiden", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Nothl Realm", "label": "Nothl Realm", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Armageddon", "label": "Armageddon", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Omniknight", "label": "Omniknight", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "Primordial Plane", "label": "Primordial Plane", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "Wyrmforge", "label": "Wyrmforge", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "The Increate", "label": "The Increate", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "The Shaper", "label": "The Shaper", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "Titans", "label": "Titans", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "The Five Pillars", "label": "The Five Pillars", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 5, "id": "Lone Druid", "label": "Lone Druid", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Light\u0027s Keep", "label": "Light\u0027s Keep", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Wailing Mountains", "label": "Wailing Mountains", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Mana", "label": "Mana", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Mars", "label": "Mars", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 0, "id": "Night Stalker", "label": "Night Stalker", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Jex", "label": "Jex", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Puck", "label": "Puck", "shape": "dot", "size": 11}]);
+                  edges = new vis.DataSet([{"from": "Enigma", "to": "Elemental Plane", "width": 1}, {"from": "Enigma", "to": "Fabric of Creation", "width": 1}, {"from": "Enigma", "to": "Fundamental Plane", "width": 1}, {"from": "Enigma", "to": "Heart of Nature", "width": 1}, {"from": "Enigma", "to": "Fundamentals", "width": 1}, {"from": "Enigma", "to": "Elementals", "width": 1}, {"from": "Enigma", "to": "Stars", "width": 1}, {"from": "Enigma", "to": "Alchemy", "width": 1}, {"from": "Enigma", "to": "Order", "width": 1}, {"from": "Enigma", "to": "Ancient Apparition", "width": 1}, {"from": "Enigma", "to": "Chaos Knight", "width": 1}, {"from": "Enigma", "to": "Elder Titan", "width": 1}, {"from": "Enigma", "to": "Malefice", "width": 1}, {"from": "Enigma", "to": "Demonic Summoning", "width": 1}, {"from": "Enigma", "to": "Midnight Pulse", "width": 1}, {"from": "Enigma", "to": "Black Hole", "width": 1}, {"from": "Enigma", "to": "Keeper of the Light", "width": 1}, {"from": "Enigma", "to": "Io", "width": 1}, {"from": "Enigma", "to": "Cedric", "width": 1}, {"from": "Elemental Plane", "to": "Elementals", "width": 1}, {"from": "Fundamental Plane", "to": "Io", "width": 1}, {"from": "Fundamental Plane", "to": "Chaos Knight", "width": 1}, {"from": "Fundamental Plane", "to": "Keeper of the Light", "width": 1}, {"from": "Fundamental Plane", "to": "The Seven Planes", "width": 1}, {"from": "Fundamental Plane", "to": "Fundamentals", "width": 1}, {"from": "Heart of Nature", "to": "Leshrac", "width": 1}, {"from": "Heart of Nature", "to": "Nature", "width": 1}, {"from": "Heart of Nature", "to": "Ash the Defiler", "width": 1}, {"from": "Heart of Nature", "to": "Chronoptic Crystals", "width": 1}, {"from": "Heart of Nature", "to": "Chronoptic Energy", "width": 1}, {"from": "Heart of Nature", "to": "Chaos", "width": 1}, {"from": "Heart of Nature", "to": "The Impurities", "width": 1}, {"from": "Heart of Nature", "to": "Elementals", "width": 1}, {"from": "Fundamentals", "to": "Io", "width": 1}, {"from": "Fundamentals", "to": "Chaos Knight", "width": 1}, {"from": "Fundamentals", "to": "Keeper of the Light", "width": 1}, {"from": "Fundamentals", "to": "Elementals", "width": 1}, {"from": "Fundamentals", "to": "Stars", "width": 1}, {"from": "Fundamentals", "to": "Chaos", "width": 1}, {"from": "Fundamentals", "to": "Order", "width": 1}, {"from": "Fundamentals", "to": "Ancient Apparition", "width": 1}, {"from": "Fundamentals", "to": "Elder Titan", "width": 1}, {"from": "Elementals", "to": "Ancient Apparition", "width": 1}, {"from": "Elementals", "to": "Bane", "width": 1}, {"from": "Elementals", "to": "Earthshaker", "width": 1}, {"from": "Elementals", "to": "Invoker", "width": 1}, {"from": "Elementals", "to": "Leshrac", "width": 1}, {"from": "Elementals", "to": "Morphling", "width": 1}, {"from": "Elementals", "to": "Phoenix", "width": 1}, {"from": "Elementals", "to": "Razor", "width": 1}, {"from": "Elementals", "to": "Spirit Breaker", "width": 1}, {"from": "Elementals", "to": "Tiny", "width": 1}, {"from": "Elementals", "to": "Visage", "width": 1}, {"from": "Elementals", "to": "Windranger", "width": 1}, {"from": "Elementals", "to": "Stone Giants", "width": 1}, {"from": "Elementals", "to": "Stars", "width": 1}, {"from": "Elementals", "to": "Terrene Plane", "width": 1}, {"from": "Elementals", "to": "Astral Plane", "width": 1}, {"from": "Elementals", "to": "Nishai", "width": 1}, {"from": "Elementals", "to": "Elemental Realm", "width": 1}, {"from": "Elementals", "to": "Barathrum\u0027s Master", "width": 1}, {"from": "Elementals", "to": "Culween", "width": 1}, {"from": "Elementals", "to": "Golems", "width": 1}, {"from": "Elementals", "to": "Gargoyles", "width": 1}, {"from": "Stars", "to": "Demon Star", "width": 1}, {"from": "Stars", "to": "Selemene", "width": 1}, {"from": "Stars", "to": "Solar Goddess", "width": 1}, {"from": "Stars", "to": "Meranths", "width": 1}, {"from": "Stars", "to": "Keeper of the Light", "width": 1}, {"from": "Stars", "to": "Phoenix", "width": 1}, {"from": "Stars", "to": "Dawnbreaker", "width": 1}, {"from": "Stars", "to": "Mirana", "width": 1}, {"from": "Stars", "to": "Oracle", "width": 1}, {"from": "Stars", "to": "Aesthetes of Keyturn", "width": 1}, {"from": "Stars", "to": "Dark Moon Order", "width": 1}, {"from": "Stars", "to": "Weeping Rose", "width": 1}, {"from": "Stars", "to": "Nightsilver Woods", "width": 1}, {"from": "Stars", "to": "Shrine of Selemene", "width": 1}, {"from": "Stars", "to": "Children of Light", "width": 1}, {"from": "Stars", "to": "Solar Crest", "width": 1}, {"from": "Stars", "to": "Meteor Hammer", "width": 1}, {"from": "Stars", "to": "Book of Heavens", "width": 1}, {"from": "Stars", "to": "Spark", "width": 1}, {"from": "Alchemy", "to": "Shadeglass", "width": 1}, {"from": "Alchemy", "to": "Alchemist", "width": 1}, {"from": "Alchemy", "to": "Templar Assassin", "width": 1}, {"from": "Alchemy", "to": "Nyx Assassin", "width": 1}, {"from": "Alchemy", "to": "Witch Doctor", "width": 1}, {"from": "Alchemy", "to": "Keen", "width": 1}, {"from": "Alchemy", "to": "Zealot Scarabs", "width": 1}, {"from": "Alchemy", "to": "Darkbrew Family", "width": 1}, {"from": "Alchemy", "to": "Nyx", "width": 1}, {"from": "Alchemy", "to": "Midas", "width": 1}, {"from": "Alchemy", "to": "Cedric", "width": 1}, {"from": "Alchemy", "to": "Hand of Midas", "width": 1}, {"from": "Alchemy", "to": "Philosopher\u0027s Stone", "width": 1}, {"from": "Alchemy", "to": "Chymistry", "width": 1}, {"from": "Alchemy", "to": "Radiant Ore", "width": 1}, {"from": "Order", "to": "Elder Titan", "width": 1}, {"from": "Order", "to": "Keeper of the Light", "width": 1}, {"from": "Ancient Apparition", "to": "Ultimyr Archives", "width": 1}, {"from": "Ancient Apparition", "to": "Crystal Maiden", "width": 1}, {"from": "Chaos Knight", "to": "Nothl Realm", "width": 1}, {"from": "Chaos Knight", "to": "Armageddon", "width": 1}, {"from": "Chaos Knight", "to": "Chaos", "width": 1}, {"from": "Chaos Knight", "to": "Io", "width": 1}, {"from": "Chaos Knight", "to": "Keeper of the Light", "width": 1}, {"from": "Chaos Knight", "to": "Elder Titan", "width": 1}, {"from": "Chaos Knight", "to": "Dawnbreaker", "width": 1}, {"from": "Chaos Knight", "to": "Omniknight", "width": 1}, {"from": "Elder Titan", "to": "Astral Plane", "width": 1}, {"from": "Elder Titan", "to": "Primordial Plane", "width": 1}, {"from": "Elder Titan", "to": "The Seven Planes", "width": 1}, {"from": "Elder Titan", "to": "Wyrmforge", "width": 1}, {"from": "Elder Titan", "to": "The Increate", "width": 1}, {"from": "Elder Titan", "to": "The Shaper", "width": 1}, {"from": "Elder Titan", "to": "Titans", "width": 1}, {"from": "Elder Titan", "to": "The Five Pillars", "width": 1}, {"from": "Elder Titan", "to": "Io", "width": 1}, {"from": "Elder Titan", "to": "Keeper of the Light", "width": 1}, {"from": "Elder Titan", "to": "Lone Druid", "width": 1}, {"from": "Keeper of the Light", "to": "Light\u0027s Keep", "width": 1}, {"from": "Keeper of the Light", "to": "Nothl Realm", "width": 1}, {"from": "Keeper of the Light", "to": "Wailing Mountains", "width": 1}, {"from": "Keeper of the Light", "to": "Armageddon", "width": 1}, {"from": "Keeper of the Light", "to": "Mana", "width": 1}, {"from": "Keeper of the Light", "to": "Spark", "width": 1}, {"from": "Keeper of the Light", "to": "Dawnbreaker", "width": 1}, {"from": "Keeper of the Light", "to": "Io", "width": 1}, {"from": "Keeper of the Light", "to": "Phoenix", "width": 1}, {"from": "Keeper of the Light", "to": "Mars", "width": 1}, {"from": "Keeper of the Light", "to": "Tiny", "width": 1}, {"from": "Keeper of the Light", "to": "Solar Goddess", "width": 1}, {"from": "Keeper of the Light", "to": "Children of Light", "width": 1}, {"from": "Keeper of the Light", "to": "Night Stalker", "width": 1}, {"from": "Io", "to": "Jex", "width": 1}, {"from": "Io", "to": "Dawnbreaker", "width": 1}, {"from": "Io", "to": "Earthshaker", "width": 1}, {"from": "Io", "to": "Mars", "width": 1}, {"from": "Io", "to": "Puck", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"gravitationalConstant": -8000, "centralGravity": 4, "springLength": 500, "springConstant": 0.002, "damping": 0.15, "avoidOverlap": 0.2}, "maxVelocity": 70, "minVelocity": 0.75}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

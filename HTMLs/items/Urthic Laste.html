@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1600px;
+                 height: 1600px;
+                 background-color: #171717;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 0, "id": "Urthic Laste", "label": "Urthic Laste", "shape": "dot", "size": 64}, {"font": {"color": "white"}, "group": 1, "id": "Stonehall", "label": "Stonehall", "shape": "dot", "size": 49}, {"font": {"color": "white"}, "group": 2, "id": "Bronze Legion", "label": "Bronze Legion", "shape": "dot", "size": 49}, {"font": {"color": "white"}, "group": 0, "id": "The Death Bounty", "label": "The Death Bounty", "shape": "dot", "size": 15}, {"font": {"color": "white"}, "group": 0, "id": "Last Strike", "label": "Last Strike", "shape": "dot", "size": 14}, {"font": {"color": "white"}, "group": 1, "id": "Coldbank Plains", "label": "Coldbank Plains", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Ember", "label": "Ember", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Leadbelly\u0027s", "label": "Leadbelly\u0027s", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Lightglass", "label": "Lightglass", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Lincastle", "label": "Lincastle", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Mistmill", "label": "Mistmill", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Pinelyn", "label": "Pinelyn", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Qine", "label": "Qine", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Quath", "label": "Quath", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Revtel", "label": "Revtel", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Sashire", "label": "Sashire", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Legion Commander", "label": "Legion Commander", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Underlord", "label": "Underlord", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Abyssal Horde", "label": "Abyssal Horde", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "White Spire", "label": "White Spire", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Emperor Galanius", "label": "Emperor Galanius", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Death Bounty", "label": "Death Bounty", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Tares", "label": "Tares", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Tarrin", "label": "Tarrin", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Oglodi", "label": "Oglodi", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Ogres", "label": "Ogres", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 2, "id": "Marcus", "label": "Marcus", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 1, "id": "Mial", "label": "Mial", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 1, "id": "Seguri", "label": "Seguri", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Duel", "label": "Duel", "shape": "dot", "size": 13}, {"font": {"color": "white"}, "group": 2, "id": "Roseleaf", "label": "Roseleaf", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Belasanno", "label": "Belasanno", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Decius", "label": "Decius", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Owine", "label": "Owine", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Pololo", "label": "Pololo", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Somjin", "label": "Somjin", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Tox Armripper", "label": "Tox Armripper", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Tyber", "label": "Tyber", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Human", "label": "Human", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Vhoul", "label": "Vhoul", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Satyrs", "label": "Satyrs", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Odobenus", "label": "Odobenus", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Red Mist", "label": "Red Mist", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Bullsnake Flag", "label": "Bullsnake Flag", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 2, "id": "Marrowfell Hunters", "label": "Marrowfell Hunters", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 0, "id": "Historic Archive of Sennos", "label": "Historic Archive of Sennos", "shape": "dot", "size": 11}]);
+                  edges = new vis.DataSet([{"from": "Urthic Laste", "to": "Stonehall", "width": 1}, {"from": "Urthic Laste", "to": "Bronze Legion", "width": 1}, {"from": "Urthic Laste", "to": "The Death Bounty", "width": 1}, {"from": "Urthic Laste", "to": "Last Strike", "width": 1}, {"from": "Stonehall", "to": "Coldbank Plains", "width": 1}, {"from": "Stonehall", "to": "Ember", "width": 1}, {"from": "Stonehall", "to": "Leadbelly\u0027s", "width": 1}, {"from": "Stonehall", "to": "Lightglass", "width": 1}, {"from": "Stonehall", "to": "Lincastle", "width": 1}, {"from": "Stonehall", "to": "Mistmill", "width": 1}, {"from": "Stonehall", "to": "Pinelyn", "width": 1}, {"from": "Stonehall", "to": "Qine", "width": 1}, {"from": "Stonehall", "to": "Quath", "width": 1}, {"from": "Stonehall", "to": "Revtel", "width": 1}, {"from": "Stonehall", "to": "Sashire", "width": 1}, {"from": "Stonehall", "to": "Legion Commander", "width": 1}, {"from": "Stonehall", "to": "Underlord", "width": 1}, {"from": "Stonehall", "to": "Bronze Legion", "width": 1}, {"from": "Stonehall", "to": "Abyssal Horde", "width": 1}, {"from": "Stonehall", "to": "White Spire", "width": 1}, {"from": "Stonehall", "to": "Emperor Galanius", "width": 1}, {"from": "Stonehall", "to": "Death Bounty", "width": 1}, {"from": "Stonehall", "to": "Tares", "width": 1}, {"from": "Stonehall", "to": "Tarrin", "width": 1}, {"from": "Stonehall", "to": "Oglodi", "width": 1}, {"from": "Stonehall", "to": "Ogres", "width": 1}, {"from": "Stonehall", "to": "Marcus", "width": 1}, {"from": "Stonehall", "to": "Mial", "width": 1}, {"from": "Stonehall", "to": "Seguri", "width": 1}, {"from": "Stonehall", "to": "The Death Bounty", "width": 1}, {"from": "Stonehall", "to": "Duel", "width": 1}, {"from": "Stonehall", "to": "Last Strike", "width": 1}, {"from": "Bronze Legion", "to": "Qine", "width": 1}, {"from": "Bronze Legion", "to": "Quath", "width": 1}, {"from": "Bronze Legion", "to": "Roseleaf", "width": 1}, {"from": "Bronze Legion", "to": "Oglodi", "width": 1}, {"from": "Bronze Legion", "to": "Ogres", "width": 1}, {"from": "Bronze Legion", "to": "Belasanno", "width": 1}, {"from": "Bronze Legion", "to": "Decius", "width": 1}, {"from": "Bronze Legion", "to": "Emperor Galanius", "width": 1}, {"from": "Bronze Legion", "to": "Marcus", "width": 1}, {"from": "Bronze Legion", "to": "Owine", "width": 1}, {"from": "Bronze Legion", "to": "Pololo", "width": 1}, {"from": "Bronze Legion", "to": "Somjin", "width": 1}, {"from": "Bronze Legion", "to": "Tox Armripper", "width": 1}, {"from": "Bronze Legion", "to": "Tyber", "width": 1}, {"from": "Bronze Legion", "to": "Abyssal Horde", "width": 1}, {"from": "Bronze Legion", "to": "Legion Commander", "width": 1}, {"from": "Bronze Legion", "to": "Underlord", "width": 1}, {"from": "Bronze Legion", "to": "Human", "width": 1}, {"from": "Bronze Legion", "to": "Vhoul", "width": 1}, {"from": "Bronze Legion", "to": "Satyrs", "width": 1}, {"from": "Bronze Legion", "to": "Odobenus", "width": 1}, {"from": "Bronze Legion", "to": "Red Mist", "width": 1}, {"from": "Bronze Legion", "to": "Bullsnake Flag", "width": 1}, {"from": "Bronze Legion", "to": "Death Bounty", "width": 1}, {"from": "Bronze Legion", "to": "Last Strike", "width": 1}, {"from": "Bronze Legion", "to": "Duel", "width": 1}, {"from": "Bronze Legion", "to": "Marrowfell Hunters", "width": 1}, {"from": "The Death Bounty", "to": "Historic Archive of Sennos", "width": 1}, {"from": "The Death Bounty", "to": "Last Strike", "width": 1}, {"from": "The Death Bounty", "to": "Duel", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"gravitationalConstant": -8000, "centralGravity": 4, "springLength": 500, "springConstant": 0.002, "damping": 0.15, "avoidOverlap": 0.2}, "maxVelocity": 70, "minVelocity": 0.75}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
